@@ -1,0 +1,11 @@
+ID,NAME,TEXT
+1,sex,Male
+2,sex,Female
+3,rental,Pay
+4,rental,Free
+5,house,Current
+6,house,Permanent
+7,cohabit,Yes
+8,cohabit,No
+9,care,Yes
+10,care,No

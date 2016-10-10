@@ -27,3 +27,33 @@ for (var i = 0; i < emps.length; i++) {
 	tr.append('<td>' + emp.tel + '</td>');
 	tr.appendTo(tbody);
 }
+
+// Yichang
+
+
+//get all propety names
+var data = [{
+  "firstName": "John",
+  "lastName": "Doe"
+}, {
+  "firstName": "Anna",
+  "car": true
+}, {
+  "firstName": "Peter",
+  "lastName": "Jones"
+}];
+
+var uniqueKeys = Object.keys(data.reduce(function(result, obj) {
+  return Object.assign(result, obj);
+}, {}));
+
+console.log(uniqueKeys);
+
+// $('#editCol').click(function(){
+// 	$('#overlay, #colSetting').toggle();
+// 	$('body').addClass('lock');
+// });
+//
+// var height = window.innerHeight / 2 - $('#colSetting').height() / 2;
+// var width = window.innerWidth / 2 - $('#colSetting').width() / 2;
+// $('#colSetting').css({top:height,left:width});

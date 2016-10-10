@@ -48,12 +48,3 @@ var uniqueKeys = Object.keys(data.reduce(function(result, obj) {
 }, {}));
 
 console.log(uniqueKeys);
-
-// $('#editCol').click(function(){
-// 	$('#overlay, #colSetting').toggle();
-// 	$('body').addClass('lock');
-// });
-//
-// var height = window.innerHeight / 2 - $('#colSetting').height() / 2;
-// var width = window.innerWidth / 2 - $('#colSetting').width() / 2;
-// $('#colSetting').css({top:height,left:width});

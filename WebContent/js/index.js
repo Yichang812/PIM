@@ -29,7 +29,10 @@ for (var i = 0; i < emps.length; i++) {
 }
 
 // Yichang
-
+//inti tooltip function
+$(function () {
+	$('#editDropdown').tooltip()
+})
 
 //get all propety names
 var data = [{

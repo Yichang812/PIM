@@ -51,3 +51,13 @@ var uniqueKeys = Object.keys(data.reduce(function(result, obj) {
 }, {}));
 
 console.log(uniqueKeys);
+
+
+$(document).ready(function () {
+	$("#btnDownload").click(function () {
+		$("#tblDownload").excelexportjs({
+			containerid: "tblDownload"
+			, datatype: 'table'
+		});
+	});
+});

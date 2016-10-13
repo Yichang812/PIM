@@ -27,3 +27,37 @@ for (var i = 0; i < emps.length; i++) {
 	tr.append('<td>' + emp.tel + '</td>');
 	tr.appendTo(tbody);
 }
+
+// Yichang
+//inti tooltip function
+$(function () {
+	$('#editDropdown').tooltip()
+})
+
+//get all propety names
+var data = [{
+  "firstName": "John",
+  "lastName": "Doe"
+}, {
+  "firstName": "Anna",
+  "car": true
+}, {
+  "firstName": "Peter",
+  "lastName": "Jones"
+}];
+
+var uniqueKeys = Object.keys(data.reduce(function(result, obj) {
+  return Object.assign(result, obj);
+}, {}));
+
+console.log(uniqueKeys);
+
+
+$(document).ready(function () {
+	$("#btnDownload").click(function () {
+		$("#tblDownload").excelexportjs({
+			containerid: "tblDownload"
+			, datatype: 'table'
+		});
+	});
+});

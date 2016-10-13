@@ -3,9 +3,11 @@
 <head>
 <script src="lib/jquery.js"></script>
 <link href="css/bootstrap.css" rel="stylesheet" />
+<link href="css/index.css" rel="stylesheet" />
 <script src="lib/bootstrap.js"></script>
 <script src="lib/alasql.js"></script>
 <script src="lib/purl.js"></script>
+<script type="text/javascript" src="lib/jquery.techbytarun.excelexportjs.js"></script>
 <script src="js/db.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="Pragma" content="no-cache">
@@ -70,12 +72,25 @@
 		</form>
 		<hr>
 
-		<div class="clearfix" style="margin: 10px 0;">
-			<a href="emp-form.html" class="btn btn-sm btn-success pull-right"><span
-				class="glyphicon glyphicon-plus"></span> New</a>
-		</div>
+		<div class="dropdown pull-right">
+		    
+		    <button type="button" class="btn btn-default btn-sm dropdown-toggle" 
+		    		id="editDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+					data-placement="right" title="Edit">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="editDropdown">
+                <li><a href="emp-form.html"><span class="glyphicon glyphicon-plus"></span> New</a></li>
+                <li><a href="#" id="editLayout" data-toggle="modal" data-target="#colSetting">Edit Column Layout</a></li>
+				<li><a href="#" id="editCol" data-toggle="modal" data-target="#customCol">Edit Custom Column</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Column Layouts</li>
+                <li><a href="#">Air Ticket</a></li>
+            </ul>
+        </div>
 
-		<table class="table table-striped">
+		<button type="button" class="btn btn-success btn-sm pull-right" id="btnDownload" style="margin-right: 20px"> Download </button>
+		<table class="table table-striped" id="tblDownload">
 			<thead>
 				<tr>
 					<th></th>
@@ -89,6 +104,82 @@
 			<tbody id="tbody-emps"></tbody>
 		</table>
 	</div>
+
+	<!-- Modal for col layout-->
+	<div class="modal fade" id="colSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Column Layout</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="layout-name" class="control-label">Layout:</label>
+
+							<select class="form-control" id="layout-name">
+								<option>CPF</option>
+								<option>Health Insurance</option>
+								<option>Monthly Party</option>
+								<option>Salesperson Performance</option>
+								<option>+ Add a new layout</option>
+							</select>
+						</div>
+						<div class="form-group">
+
+						</div>
+
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Modal for custom col-->
+
+	<div class="modal fade" id="customCol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Custom Column</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="column-name" class="control-label">Name:</label>
+
+							<select class="form-control" id="column-name">
+								<option>CPF</option>
+								<option>Health Insurance</option>
+								<option>Monthly Party</option>
+								<option>Salesperson Performance</option>
+								<option>+ Add a new layout</option>
+							</select>
+						</div>
+						<div class="form-group">
+
+						</div>
+
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src="js/index.js"></script>
 </body>
 </html>

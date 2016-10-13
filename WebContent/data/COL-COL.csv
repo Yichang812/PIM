@@ -1,0 +1,16 @@
+ID,DB,WEB
+1,NUMBER,Number
+2,NAME,Name
+3,SEX,Gender
+4,BIRTHDAY,Date of Birth
+5,TEL,Telephone
+6,CTCT_NAME,Emergency Contact Name
+7,CTCT_ADDR,Emergency Contact Address
+8,CTCT_TEL,Emergency Contact Tel
+9,PSPT_NO,Passport No.
+10,PSPT_DATE,Passport Date
+11,PSPT_NAME,Passport Name
+12,RENTAL,Type of Lending
+13,ADDR,Address
+14,FAMILY,Family
+15,EDU,Education

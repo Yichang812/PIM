@@ -39,10 +39,11 @@ DB.load = function() {
 	// education
 	alasql('DROP TABLE IF EXISTS edu;');
 	alasql('CREATE TABLE edu(id INT IDENTITY, emp INT, school STRING, major STRING, grad STRING);');
-	var pedu = alasql.promise('SELECT MATRIX * FROM CSV("data/EDU-EDU.csv", {headers: true})').then(function(edus) {
-		for (var i = 0; i < edus.length; i++) {
-			alasql('INSERT INTO edu VALUES(?,?,?,?,?);', edus[i]);
-		}
+	var pedu = alasql.promise('SELECT MATRIX * FROM CSV("data/EDU-EDU.csv", {headers: true})').then(
+		function(edus) {
+			for (var i = 0; i < edus.length; i++) {
+				alasql('INSERT INTO edu VALUES(?,?,?,?,?);', edus[i]);
+			}
 	});
 
 	// choice
@@ -54,9 +55,43 @@ DB.load = function() {
 					alasql('INSERT INTO choice VALUES(?,?,?);', choices[i]);
 				}
 			});
+	//colname
+	alasql('DROP TABLE IF EXISTS colname');
+	alasql('CREATE TABLE colname(id INT IDENTITY, db STRING, web STRING);');
+	var pcolname = alasql.promise('SELECT MATRIX * FROM CSV("data/COL-COL.csv",{headers:true})').then(
+			function(colnames){
+				for(var i = 0; i< colnames.length; i++){
+					alasql('INSERT INTO colname VALUES(?,?,?);',colnames[i]);
+				}
+			}
+	);
+
+	//layout
+	alasql('DROP TABLE IF EXISTS layout');
+	alasql('CREATE TABLE layout(id INT IDENTITY, name STRING);');
+	var playout = alasql.promise('SELECT MATRIX * FROM CSV("data/LAYOUT-LAYOUT.csv",{headers:true})').then(
+		function(layouts){
+			for(var i = 0; i< layouts.length; i++){
+				alasql('INSERT INTO layout VALUES(?,?);',layouts[i]);
+			}
+		}
+	);
+
+	//col-layout
+	alasql('DROP TABLE IF EXISTS colLayout');
+	alasql('CREATE TABLE colLayout(id INT IDENTITY, l_id INT, c_id INT);');
+	var pcolLayout = alasql.promise('SELECT MATRIX * FROM CSV("data/COLLAYOUT-COLLAYOUT.csv",{headers:true})').then(
+		function(colLayouts){
+			for(var i = 0; i< colLayouts.length; i++){
+				alasql('INSERT INTO colLayout VALUES(?,?,?);',colLayouts[i]);
+			}
+		}
+	);
+
+
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice ]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, pcolname, playout, pcolLayout]).then(function() {
 		window.location.reload(true);
 	});
 };

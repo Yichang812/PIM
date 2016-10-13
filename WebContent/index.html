@@ -7,13 +7,15 @@
 <script src="lib/bootstrap.js"></script>
 <script src="lib/alasql.js"></script>
 <script src="lib/purl.js"></script>
-<script type="text/javascript" src="lib/jquery.techbytarun.excelexportjs.js"></script>
+<script src="lib/jquery.techbytarun.excelexportjs.js"></script>
 <script src="js/db.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width">
 <title>COMPANY</title>
+
+
 </head>
 <body>
 
@@ -89,19 +91,22 @@
         </div>
 
 		<button type="button" class="btn btn-success btn-sm pull-right" id="btnDownload" style="margin-right: 20px"> Download </button>
+
 		<table class="table table-striped" id="tblDownload">
 			<thead>
-				<tr>
-					<th></th>
-					<th>Number</th>
-					<th>Name</th>
-					<th>Gender</th>
-					<th>Date of Birth</th>
-					<th>Telephone</th>
-				</tr>
+			<tr>
+				<th></th>
+				<th>Number</th>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Date of Birth</th>
+				<th>Telephone</th>
+			</tr>
 			</thead>
 			<tbody id="tbody-emps"></tbody>
 		</table>
+
+
 	</div>
 
 	<!-- Modal for col layout-->
@@ -114,22 +119,22 @@
 				</div>
 				<div class="modal-body">
 					<form>
-						<div class="form-group">
+						<div class="form-group layout-selector">
 							<label for="layout-name" class="control-label">Layout:</label>
 
 							<select class="form-control" id="layout-name">
-								<option>CPF</option>
-								<option>Health Insurance</option>
-								<option>Monthly Party</option>
-								<option id="newLayout">+ Add a new layout</option>
 							</select>
+						</div>
+						<div class="form-group name-inputor">
+							<label for="new-layout-name" class="control-label">Name:</label>
+							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
 						</div>
 						<div class="form-group col-selector">
 							<label for="col-name" class="control-label">Column:</label>
 							<select class="form-control" id="col-name">
 							</select>
 							<div id="col-tag">
-								<a class="btn btn-info btn-xs col-name-tag">Number X</a>
+								<!--<a class="btn btn-info btn-xs col-name-tag">Number X</a>-->
 							</div>
 						</div>
 
@@ -181,5 +186,7 @@
 	</div>
 
 	<script src="js/index.js"></script>
+	<script src="js/customcol.js"></script>
+	<script src="js/layout.js"></script>
 </body>
 </html>

@@ -44,29 +44,46 @@ $(document).ready(function () {
 			, datatype: 'table'
 		});
 	});
+
 });
 
 
+
 var layouts = alasql('SELECT * FROM layout', []);
+var colNames =  alasql('SELECT * FROM colname', []);
 
 for (i = 0; i<layouts.length; i++){
 	var layout = layouts[i];
 	var li = $('<li><a href="#">'+layout.name+'</a></li>');
 	$('#layoutList').after(li);
+	var l_op = $('<option>'+layout.name+'</option>');
+	$('#layout-name').append(l_op);
 }
-//display column selector
-$('#layout-name').change(function(index){
-	$('.col-selector').toggle();
+$('#layout-name').append('<option id="newLayout">'+'+ Add a new layout'+'</option>');
+
+
+
+
+
+
+$('#layout-name').change(function(){
+	var id = $(this).children(':selected').attr("id");
+	console.log(id);
+	if(id=='newLayout'){
+		$('.name-inputor').toggle();
+		$('.layout-selector').hide();
+		$('.col-selector').show();
+	}else{
+		$('.col-selector').toggle();
+	}
+
 });
 
-//get all column names
-var colNames =  alasql('SELECT * FROM colname', []);
-var colList = $('#col-name');
+
 for (i = 0; i<colNames.length; i++){
 	var colName = colNames[i];
-	var op = $('<option></option>');
-	op.text(colName.web);
-	op.appendTo(colList);
+	var c_op = $('<option>'+colName.web+'</option>');
+	$('#col-name').append(c_op);
 }
 
 //add a tag if user select a column
@@ -74,6 +91,14 @@ var selected_cols = ["Number"]; // a temp storage
 $('#col-name').change(function(){
 	var selected_col = $(this).val();
 	if(selected_cols.push(selected_col)){
-		$('#col-tag').append('<a class="btn btn-info btn-xs col-name-tag">'+selected_col+' '+'X'+'</a>');
+		$('#col-tag').append('<a href="#" class="btn btn-info btn-xs col-name-tag">'+selected_col+' '+'X'+'</a>');
 	}
+});
+$('.col-name-tag').click(function(){
+	var col_name = $(this).text().replace(' X','');
+	console.log('hi');
+
+	var index = selected_cols.indexOf(col_name);
+	selected_cols.splice(index,1);
+	console.log(selected_cols);
 });

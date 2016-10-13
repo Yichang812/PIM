@@ -1,8 +1,10 @@
-/**/
-.col-selector{
+.col-selector,
+.name-inputor
+{
     display: none;
 }
 .col-name-tag{
-    margin-right:10px;
-    margin-top:10px;
+
+     margin-right:10px;
+     margin-top:10px;
 }

@@ -34,6 +34,8 @@ function findIdByName(name){
     return id.id;
 }
 
+var saveLayout = alasql.compile('INSERT INTO layout VALUES (?,?)');
+var saveColLay = alasql.compile('INSERT INTO colLayout VALUES (?,?,?)');
 //==================================================================
 
 //setup modal content
@@ -83,34 +85,17 @@ layout_name.change(function () {
 //save new layout
 $('#new-layout-form').submit(function () {
 
-    var lay ={};
+    //var lay =[];
+    var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
     var name = $('#new-layout-name').val();
-    lay.push(name);
-    var id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
-    lay.unshift(id);
-    //save to layout table
-    alasql(
-        'INSERT INTO layout(\
-        id, \
-        name) \
-        VALUES(?,?);',
-        lay);
+    saveLayout(l_id.toString(),name);
+
     //save to colLayout
-    var col_lay = {};
-    id = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
-    col_lay.push(id);
-    col_lay.push(findIdByName(name));
+    var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
     var cols= $('#col-name-new').val();
     for(i = 0; i<cols.length; i++){
-        col_lay.push(cols[i]);
-        alasql(
-            'INSERT INTO colLayout(\
-            id, \
-            l_id,\
-            c_id) \
-            VALUES(?,?,?);',
-            col_lay);
-        col_lay.pop();
+        alasql(n,l_id,cols[i]);
+        n++;
     }
 
 });

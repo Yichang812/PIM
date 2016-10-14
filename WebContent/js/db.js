@@ -96,6 +96,8 @@ DB.load = function() {
 	});
 };
 
+
+
 DB.remove = function() {
 	if (window.confirm('are you sure do delete dababase?')) {
 		alasql('DROP localStorage DATABASE EMP')

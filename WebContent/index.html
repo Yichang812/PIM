@@ -4,10 +4,12 @@
 <script src="lib/jquery.js"></script>
 <link href="css/bootstrap.css" rel="stylesheet" />
 <link href="css/index.css" rel="stylesheet" />
+<link href="css/multiple-select.css" rel="stylesheet"/>
 <script src="lib/bootstrap.js"></script>
 <script src="lib/alasql.js"></script>
 <script src="lib/purl.js"></script>
 <script src="lib/jquery.techbytarun.excelexportjs.js"></script>
+<script src="lib/multiple-select.js"></script>
 <script src="js/db.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="Pragma" content="no-cache">
@@ -77,22 +79,22 @@
 		<div class="dropdown pull-right">
 		    
 		    <button type="button" class="btn btn-default btn-sm dropdown-toggle" 
-		    		id="editDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 					data-placement="right" title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="editDropdown">
+            <ul class="dropdown-menu" aria-labelledby="edit-dropdown" id="dropdown-edit">
                 <li><a href="emp-form.html"><span class="glyphicon glyphicon-plus"></span> New</a></li>
-                <li><a href="#" id="editLayout" data-toggle="modal" data-target="#colSetting">Edit Column Layout</a></li>
-				<li><a href="#" id="editCol" data-toggle="modal" data-target="#customCol">Edit Custom Column</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#new-layout">Layout</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#custom-col">Custom Column</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header" id="layoutList">Column Layouts</li>
+                <li class="dropdown-header" id="layout-list">Column Layouts</li>
             </ul>
         </div>
 
-		<button type="button" class="btn btn-success btn-sm pull-right" id="btnDownload" style="margin-right: 20px"> Download </button>
+		<button type="button" class="btn btn-success btn-sm pull-right" id="btn-download" style="margin-right: 20px"> Download </button>
 
-		<table class="table table-striped" id="tblDownload">
+		<table class="table table-striped" id="tbl-download">
 			<thead>
 			<tr>
 				<th></th>
@@ -109,41 +111,65 @@
 
 	</div>
 
-	<!-- Modal for col layout-->
-	<div class="modal fade" id="colSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<!-- Modal for create layout-->
+	<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Column Layout</h4>
+					<h4 class="modal-title">New Column Layout</h4>
 				</div>
 				<div class="modal-body">
 					<form>
-						<div class="form-group layout-selector">
-							<label for="layout-name" class="control-label">Layout:</label>
-
-							<select class="form-control" id="layout-name">
-							</select>
-						</div>
 						<div class="form-group name-inputor">
 							<label for="new-layout-name" class="control-label">Name:</label>
 							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
 						</div>
 						<div class="form-group col-selector">
-							<label for="col-name" class="control-label">Column:</label>
-							<select class="form-control" id="col-name">
+							<label for="col-name-new" class="control-label">Column:</label>
+							<select id="col-name-new" multiple="multiple">
 							</select>
-							<div id="col-tag">
-								<!--<a class="btn btn-info btn-xs col-name-tag">Number X</a>-->
-							</div>
 						</div>
 
 					</form>
 				</div>
-
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-info">Save changes</button>
+					<button type="button" class="btn btn-default" id="btn-edit">Edit</button>
+					<button type="button" class="btn btn-info">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Model for edit layout-->
+	<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Edit Column Layout</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group layout-selector">
+							<label for="layout-name" class="control-label">Layout:</label>
+							<select class="form-control" id="layout-name">
+							</select>
+						</div>
+
+						<div class="form-group col-selector">
+							<label for="col-name-edit" class="control-label">Column:</label>
+							<select id="col-name-edit" multiple="multiple">
+							</select>
+						</div>
+
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-info">Save</button>
 
 				</div>
 			</div>
@@ -152,7 +178,7 @@
 
 	<!--Modal for custom col-->
 
-	<div class="modal fade" id="customCol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="custom-col" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -178,7 +204,7 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-info">Save</button>
 
 				</div>
 			</div>

@@ -32,14 +32,14 @@ for (i = 0; i < emps.length; i++) {
 // Yichang
 //inti tooltip function
 $(function () {
-	$('#editDropdown').tooltip()
+	$('#edit-dropdown').tooltip()
 });
 
 
 //download table as Excel
 $(document).ready(function () {
-	$('#btnDownload').click(function () {
-		$('#tblDownload').excelexportjs({
+	$('#btn-download').click(function () {
+		$('#tbl-download').excelexportjs({
 			containerid: "tblDownload"
 			, datatype: 'table'
 		});
@@ -50,55 +50,18 @@ $(document).ready(function () {
 
 
 var layouts = alasql('SELECT * FROM layout', []);
-var colNames =  alasql('SELECT * FROM colname', []);
+
 
 for (i = 0; i<layouts.length; i++){
 	var layout = layouts[i];
-	var li = $('<li><a href="#">'+layout.name+'</a></li>');
-	$('#layoutList').after(li);
-	var l_op = $('<option>'+layout.name+'</option>');
-	$('#layout-name').append(l_op);
+	var li = $('<li class="name-layout"><a href="#">'+layout.name+'</a></li>');
+	$('#layout-list').after(li);
 }
-$('#layout-name').append('<option id="newLayout">'+'+ Add a new layout'+'</option>');
+var layout_menu = $('.name-layout');
+layout_menu.eq(0).addClass('list-group-item-info'); //current layout
 
-
-
-
-
-
-$('#layout-name').change(function(){
-	var id = $(this).children(':selected').attr("id");
-	console.log(id);
-	if(id=='newLayout'){
-		$('.name-inputor').toggle();
-		$('.layout-selector').hide();
-		$('.col-selector').show();
-	}else{
-		$('.col-selector').toggle();
-	}
-
-});
-
-
-for (i = 0; i<colNames.length; i++){
-	var colName = colNames[i];
-	var c_op = $('<option>'+colName.web+'</option>');
-	$('#col-name').append(c_op);
-}
-
-//add a tag if user select a column
-var selected_cols = ["Number"]; // a temp storage
-$('#col-name').change(function(){
-	var selected_col = $(this).val();
-	if(selected_cols.push(selected_col)){
-		$('#col-tag').append('<a href="#" class="btn btn-info btn-xs col-name-tag">'+selected_col+' '+'X'+'</a>');
-	}
-});
-$('.col-name-tag').click(function(){
-	var col_name = $(this).text().replace(' X','');
-	console.log('hi');
-
-	var index = selected_cols.indexOf(col_name);
-	selected_cols.splice(index,1);
-	console.log(selected_cols);
+layout_menu.click(function (index) {
+	console.log(index);
+	$(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
+	$(this).addClass('list-group-item-info');
 });

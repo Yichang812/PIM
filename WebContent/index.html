@@ -79,7 +79,7 @@
 		<div class="dropdown pull-right">
 		    
 		    <button type="button" class="btn btn-default btn-sm dropdown-toggle" 
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                    id="edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 					data-placement="right" title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
@@ -120,7 +120,7 @@
 					<h4 class="modal-title">New Column Layout</h4>
 				</div>
 				<div class="modal-body">
-					<form>
+					<form id="new-layout-form">
 						<div class="form-group name-inputor">
 							<label for="new-layout-name" class="control-label">Name:</label>
 							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
@@ -130,13 +130,13 @@
 							<select id="col-name-new" multiple="multiple">
 							</select>
 						</div>
+                        <button type="submit" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
+                        <button type="button" class="btn btn-default pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>
 
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-default" id="btn-edit">Edit</button>
-					<button type="button" class="btn btn-info" id="btn-create-lay">Save</button>
+
 
 				</div>
 			</div>

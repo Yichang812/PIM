@@ -21,13 +21,17 @@ var i;
 //find the displayed column by layout name
 function getColList(name){
     var colList = [];
-    var layout = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
-    var selected_col = alasql('SELECT c_id FROM colLayout WHERE l_id=?',[parseInt(layout.id)]);
+    var selected_col = alasql('SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
 
     for(i = 0; i<selected_col.length; i++){
         colList.push(selected_col[i].c_id);
     }
     return colList;
+}
+
+function findIdByName(name){
+    var id = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
+    return id.id;
 }
 
 //==================================================================
@@ -76,16 +80,57 @@ layout_name.change(function () {
     col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
 });
 
+//save new layout
+$('#new-layout-form').submit(function () {
+
+    var lay ={};
+    var name = $('#new-layout-name').val();
+    lay.push(name);
+    var id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
+    lay.unshift(id);
+    //save to layout table
+    alasql(
+        'INSERT INTO layout(\
+        id, \
+        name) \
+        VALUES(?,?);',
+        lay);
+    //save to colLayout
+    var col_lay = {};
+    id = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
+    col_lay.push(id);
+    col_lay.push(findIdByName(name));
+    var cols= $('#col-name-new').val();
+    for(i = 0; i<cols.length; i++){
+        col_lay.push(cols[i]);
+        alasql(
+            'INSERT INTO colLayout(\
+            id, \
+            l_id,\
+            c_id) \
+            VALUES(?,?,?);',
+            col_lay);
+        col_lay.pop();
+    }
+
+});
+
+
+
+
 //delete layout
-$('#btn-delete-lay').click(function(){
-    $('#edit-layout').modal('hide');
-    alert.find('#delete-name').text();
-    alert.toggle();
-});
-
-$('#btn-del-confirm').click(function () {
-
-});
+// $('#btn-delete-lay').click(function(){
+//     $('#edit-layout').modal('hide');
+//     var currentLay = layout_name.val();
+//     alert.find('#delete-name').text();
+//     alert.toggle();
+// });
+//
+// $('#btn-del-confirm').click(function () {
+    //get selected layout
+    //get layout id
+    //delete from col colLayout WHERE
+// });
 
 
 // $("#setSelectsBtn").click(function() {

@@ -11,6 +11,11 @@ ID,DB,WEB
 10,PSPT_DATE,Passport Date
 11,PSPT_NAME,Passport Name
 12,RENTAL,Type of Lending
-13,ADDR,Address
-14,FAMILY,Family
-15,EDU,Education
+13,OR_WAGE,Ordinary Wage
+14,ADD_WAGE,Additional Wage
+15,TARGET,Target Amount
+16,REAL,Sale Amount
+17,FOOD_PRE,Food Preferences
+18,ADDR,Address
+19,FAMILY,Family
+20,EDU,Education

@@ -13,6 +13,11 @@ $('#pspt_no').text(emp.pspt_no);
 $('#pspt_date').text(emp.pspt_date);
 $('#pspt_name').text(emp.pspt_name);
 $('#rental').text(DB.choice(emp.rental));
+$('#or_wage').text(emp.or_wage);
+$('#add_wage').text(emp.add_wage);
+$('#target').text(emp.target);
+$('#real').text(emp.real);
+$('#food').text(emp.food);
 
 // set image and name
 $('#img-emp').attr('src', 'img/' + emp.id + '.jpg');

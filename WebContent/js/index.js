@@ -55,7 +55,7 @@ var layouts = alasql('SELECT * FROM layout', []);
 for (i = 0; i<layouts.length; i++){
 	var layout = layouts[i];
 	var li = $('<li class="name-layout"><a href="#">'+layout.name+'</a></li>');
-	$('#layout-list').after(li);
+	$('#layout-list').parent().append(li);
 }
 var layout_menu = $('.name-layout');
 layout_menu.eq(0).addClass('list-group-item-info'); //current layout

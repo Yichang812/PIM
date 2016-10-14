@@ -6,12 +6,33 @@ var colNames = alasql('SELECT * FROM colname', []);
 
 
 
+
 var layout_name = $('#layout-name');
 var col_name_edit = $('#col-name-edit');
 var col_name_new = $('#col-name-new');
+var alert = $('.delete-alert');
+var edit_modal = $('#edit-layout');
+var new_modal = $('#new-layout');
 var i;
 
 
+
+
+//find the displayed column by layout name
+function getColList(name){
+    var colList = [];
+    var layout = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
+    var selected_col = alasql('SELECT c_id FROM colLayout WHERE l_id=?',[parseInt(layout.id)]);
+
+    for(i = 0; i<selected_col.length; i++){
+        colList.push(selected_col[i].c_id);
+    }
+    return colList;
+}
+
+//==================================================================
+
+//setup modal content
 for (i = 0; i<layouts.length; i++){
     var layout = layouts[i];
     var l_op = $('<option>'+layout.name+'</option>');
@@ -27,30 +48,44 @@ for (i = 0; i<colNames.length; i++){
     col_name_edit.append(c_op.clone());
 }
 
-
-
 $('#btn-edit').click(function () {
-    $('#new-layout').modal('hide');
-    $('#edit-layout').modal('show');
+    new_modal.modal('hide');
+    edit_modal.modal('show');
+    var currentLay = layout_name.val();
+    col_name_edit.multipleSelect("setSelects",getColList(currentLay));
 });
 
-
-//edit
 $(function() {
     col_name_new.multipleSelect({
         width: '100%'
     });
-
-});
-
-$(function() {
     col_name_edit.multipleSelect({
         width: '100%'
     });
 
 });
 
+//=========================================================================
 
+
+
+
+
+//load layout
+layout_name.change(function () {
+    col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
+});
+
+//delete layout
+$('#btn-delete-lay').click(function(){
+    $('#edit-layout').modal('hide');
+    alert.find('#delete-name').text();
+    alert.toggle();
+});
+
+$('#btn-del-confirm').click(function () {
+
+});
 
 
 // $("#setSelectsBtn").click(function() {

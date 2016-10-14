@@ -136,7 +136,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-default" id="btn-edit">Edit</button>
-					<button type="button" class="btn btn-info">Save</button>
+					<button type="button" class="btn btn-info" id="btn-create-lay">Save</button>
 
 				</div>
 			</div>
@@ -168,8 +168,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-info">Save</button>
+					<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>
+					<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>
 
 				</div>
 			</div>
@@ -210,6 +210,17 @@
 			</div>
 		</div>
 	</div>
+
+    <div class="alert alert-danger col-md-4 col-md-offset-4 delete-alert" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 style="text-align: center"><span class="glyphicon glyphicon-alert" style="margin-right: 10px"></span>Do you want to delete layout: <span id="delete-name" style="font-size: 140%"></span>?</h4>
+
+        <button class="btn btn-danger pull-right" id="btn-del-confirm" style="margin: 10px 0 0 0">Yes, delete it!</button>
+        <button class="btn btn-default pull-right" data-dismiss="alert" style="margin: 10px 10px 0 0;width: 53px">NO</button>
+
+    </div>
 
 	<script src="js/index.js"></script>
 	<script src="js/customcol.js"></script>

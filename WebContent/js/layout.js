@@ -34,8 +34,6 @@ function findIdByName(name){
     return id.id;
 }
 
-var saveLayout = alasql.compile('INSERT INTO layout VALUES (?,?)');
-var saveColLay = alasql.compile('INSERT INTO colLayout VALUES (?,?,?)');
 //==================================================================
 
 //setup modal content
@@ -88,13 +86,14 @@ $('#new-layout-form').submit(function () {
     //var lay =[];
     var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
     var name = $('#new-layout-name').val();
-    saveLayout(l_id.toString(),name);
+
+    alasql('INSERT INTO layout VALUES (?,?)',[l_id.toString(),name]);
 
     //save to colLayout
     var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
     var cols= $('#col-name-new').val();
     for(i = 0; i<cols.length; i++){
-        alasql(n,l_id,cols[i]);
+        alasql('INSERT INTO colLayout VALUES (?,?,?)',[n.toString(),l_id.toString(),cols[i].toString()]);
         n++;
     }
 

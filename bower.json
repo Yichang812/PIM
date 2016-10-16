@@ -1,8 +1,7 @@
 {
   "name": "inventory",
   "version": "0.0.0",
-  "authors": [
-  ],
+  "authors": [],
   "description": "",
   "main": "",
   "moduleType": [],
@@ -19,6 +18,7 @@
     "jquery": "~2.2.0",
     "bootstrap": "~3.3.6",
     "purl": "~2.3.1",
-    "alasql": "~0.2.3"
+    "alasql": "~0.2.3",
+    "datatables.net": "~1.10.12"
   }
 }

@@ -9,9 +9,10 @@ DB.init = function() {
 DB.load = function() {
 	// personal info
 	alasql('DROP TABLE IF EXISTS emp;');
-	alasql('CREATE TABLE emp(id INT IDENTITY, number STRING, name STRING, sex INT, birthday DATE, tel STRING, ctct_name STRING, ctct_addr STRING, ctct_tel STRING, pspt_no STRING, pspt_date STRING, pspt_name STRING, rental STRING, or_wage INT, add_wage INT,tar_amount INT, real INT,food STRING);');
+	alasql('CREATE TABLE emp(id INT IDENTITY, number STRING, name STRING, sex INT, birthday DATE, tel STRING, ' +
+		'ctct_name STRING, ctct_addr STRING, ctct_tel STRING, pspt_no STRING, pspt_date STRING, pspt_name STRING, ' +
+		'rental STRING, or_wage INT, add_wage INT, tar_amount INT, real INT, food STRING);');
 	var pemp = alasql.promise('SELECT MATRIX * FROM CSV("data/EMP-EMP.csv", {headers: true})').then(function(emps) {
-		console.log(emps.length);
 		for (var i = 0; i < emps.length; i++) {
 			alasql('INSERT INTO emp VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', emps[i]);
 		}
@@ -69,11 +70,11 @@ DB.load = function() {
 
 	//layout
 	alasql('DROP TABLE IF EXISTS layout');
-	alasql('CREATE TABLE layout(id INT IDENTITY, name STRING);');
+	alasql('CREATE TABLE layout(id INT IDENTITY, name STRING, active BOOLEAN);');
 	var playout = alasql.promise('SELECT MATRIX * FROM CSV("data/LAYOUT-LAYOUT.csv",{headers:true})').then(
 		function(layouts){
 			for(var i = 0; i< layouts.length; i++){
-				alasql('INSERT INTO layout VALUES(?,?);',layouts[i]);
+				alasql('INSERT INTO layout VALUES(?,?,?);',layouts[i]);
 			}
 		}
 	);

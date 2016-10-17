@@ -1,5 +1,5 @@
-ID,NAME
-1,CPF
-2,Health Insurance
-3,Performance
-4,Monthly Party
+ID,NAME,ACTIVE
+1,CPF,true
+2,Health Insurance,false
+3,Performance,false
+4,Monthly Party,false

@@ -30,7 +30,6 @@ var i;
 function getColList(name){
     var colList = [];
     var selected_col = alasql('SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
-
     for(i = 0; i<selected_col.length; i++){
         colList.push(selected_col[i].c_id);
     }
@@ -76,7 +75,46 @@ function findEduById(e_id){
     }else{
         return '';
     }
+}
+function setActiveLay(name){
+    alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
+    alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
 
+}
+function getActiveLay(){
+    var active_lay = alasql('SELECT * FROM layout WHERE active=?',["true"])[0];
+    return active_lay.name;
+}
+function fillTable(cols){
+    for (i = 0; i < emps.length; i++) {
+        var emp = emps[i];
+        var row = $('<tr></tr>');
+        for (var n = 0; n < cols.length; n++) {
+            switch (cols[n]) {
+                case 1:
+                    row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
+                    break;
+                case 2:
+                    row.append('<td><a href="emp.html?id=' + emp.id + '">' + emp.number + '</a></td>');
+                    break;
+                case 4:
+                    row.append('<td>' + DB.choice(emp.sex) + '</td>');
+                    break;
+                case 19:
+                    row.append('<td>' + findAddrById(emp.id) + '</td>');
+                    break;
+                case 20:
+                    row.append('<td>' + findFamById(emp.id) + '</td>');
+                    break;
+                case 21:
+                    row.append('<td>' + findEduById(emp.id) + '</td>');
+                    break;
+                default:
+                    row.append('<td>' + emp[findColDB(cols[n])] + '</td>');
+            }//switch
+        }//for each record
+        row.appendTo('#tbody-emps');
+    }
 }
 
 //==================================================================
@@ -92,7 +130,6 @@ for (i = 0; i<colNames.length; i++){
     var colName = colNames[i];
     var c_op = $('<option>'+colName.web+'</option>');
     c_op.attr('value',colName.id);
-
     col_name_new.append(c_op);
     col_name_edit.append(c_op.clone());
 }
@@ -116,20 +153,19 @@ $(function() {
 
 //=========================================================================
 
+//set table content
+fillTable(getColList(getActiveLay()));
 
-//load layout
+//load layout setting
 layout_name.change(function () {
     col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
 });
 
 //save new layout
 $('#new-layout-form').submit(function () {
-
     var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
     var name = $('#new-layout-name').val();
-
     alasql('INSERT INTO layout VALUES (?,?)',[l_id.toString(),name]);
-
     //save to colLayout
     var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
     var cols= $('#col-name-new').val();
@@ -172,40 +208,11 @@ $('.opt-layout').click(function () {
     var option = $(this).text();
     theader.children('th').remove();
     trecords.children('tr').remove();
-    var col_ls = getColList(option);
+    setActiveLay(option);
+    var col_ls = getColList(getActiveLay());
     for(i=0; i<col_ls.length; i++){
         theader.append('<th>'+findColName(col_ls[i])+'</th>');
     }
-
-    for (i = 0; i < emps.length; i++) {
-        var emp = emps[i];
-        var row = $('<tr></tr>');
-
-        for(var n =0;n<col_ls.length;n++){
-            switch (col_ls[n]){
-                case 1:
-                    row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-                    break;
-                case 2:
-                    row.append('<td><a href="emp.html?id=' + emp.id + '">' + emp.number + '</a></td>');
-                    break;
-                case 4:
-                    row.append('<td>'+DB.choice(emp.sex)+'</td>');
-                    break;
-                case 19:
-                    row.append('<td>'+findAddrById(emp.id)+'</td>');
-                    break;
-                case 20:
-                    row.append('<td>'+findFamById(emp.id)+'</td>');
-                    break;
-                case 21:
-                    row.append('<td>'+findEduById(emp.id)+'</td>');
-                    break;
-                default:
-                    row.append('<td>'+emp[findColDB(col_ls[n])]+'</td>');
-            }//switch
-        }
-        row.appendTo('#tbody-emps');//for each record
-    }//for each row
-
+    fillTable(col_ls);
 });
+

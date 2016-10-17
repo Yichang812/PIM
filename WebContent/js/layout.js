@@ -30,6 +30,7 @@ var edit_modal = $('#edit-layout');
 var new_modal = $('#new-layout');
 var trecords = $('#tbl-download tbody');
 var theader = $('#tbl-download thead tr');
+var layout_menu = $('.opt-layout');
 var i;
 
 
@@ -47,6 +48,11 @@ function getColList(name){
 function findIdByName(name){
     var id = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
     return id.id;
+}
+function getFirstLay(){
+    var first_lay = alasql('SELECT * FROM layout',[])[0];
+    return first_lay.name;
+
 }
 
 function findColName(c_id){
@@ -87,6 +93,7 @@ function findEduById(e_id){
 function setActiveLay(name){
     alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
     alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
+    highlightActive(name);
 
 }
 function getActiveLay(){
@@ -128,6 +135,15 @@ function fillTable(cols){
     }
 }
 
+function highlightActive(name){
+    layout_menu.each(function () {
+        var opt = $(this).text();
+        if(opt==name){
+            $(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
+            $(this).addClass('list-group-item-info');
+        }
+    });
+}
 //==================================================================
 
 //setup modal content
@@ -164,8 +180,12 @@ $(function() {
 
 //=========================================================================
 
+
+
 //set table content
 fillTable(getColList(getActiveLay()));
+highlightActive(getActiveLay());
+
 
 //load layout setting
 layout_name.change(function () {
@@ -204,6 +224,8 @@ $('#btn-delete-lay').click(function(){
                 'Yes,delete it': function () {
                     alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
                     alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
+                    setActiveLay(getFirstLay());
+                    fillTable(getColList(getFirstLay()));
                     $(this).dialog("close");
                 },
                 No: function () {
@@ -214,7 +236,7 @@ $('#btn-delete-lay').click(function(){
 });
 
 //update table
-$('.opt-layout').click(function () {
+layout_menu.click(function () {
     var option = $(this).text();
     theader.children('th').remove();
     trecords.children('tr').remove();

@@ -58,7 +58,7 @@ DB.load = function() {
 			});
 	//colname
 	alasql('DROP TABLE IF EXISTS colname');
-	alasql('CREATE TABLE colname(id INT IDENTITY, db STRING, web STRING);');
+	alasql('CREATE TABLE colname(id INT IDENTITY, db_name STRING, web STRING);');
 	var pcolname = alasql.promise('SELECT MATRIX * FROM CSV("data/COL-COL.csv",{headers:true})').then(
 			function(colnames){
 				for(var i = 0; i< colnames.length; i++){

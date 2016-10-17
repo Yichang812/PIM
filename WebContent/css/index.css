@@ -7,3 +7,10 @@
 #new-layout-form{
     margin-bottom:50px;
 }
+.ui-dialog-buttonset{
+    padding:5px 10px;
+}
+
+.fixHeader{
+    position:fixed;
+}

@@ -16,7 +16,6 @@ if (q1) {
 
 // create employee list
 var tbody = $('#tbody-emps');
-var i;
 for (i = 0; i < emps.length; i++) {
 	var emp = emps[i];
 	var tr = $('<tr></tr>');
@@ -45,10 +44,6 @@ $(document).ready(function () {
 		});
 	});
 
-	// $('#tbl-download').DataTable({
-	// 	fixedHeader:true
-	// });
-
 });
 
 
@@ -58,14 +53,13 @@ var layouts = alasql('SELECT * FROM layout', []);
 
 for (i = 0; i<layouts.length; i++){
 	var layout = layouts[i];
-	var li = $('<li class="name-layout"><a href="#">'+layout.name+'</a></li>');
+	var li = $('<li class="opt-layout"><a href="#">'+layout.name+'</a></li>');
 	$('#layout-list').parent().append(li);
 }
-var layout_menu = $('.name-layout');
+var layout_menu = $('.opt-layout');
 layout_menu.eq(0).addClass('list-group-item-info'); //current layout
 
-layout_menu.click(function (index) {
-	console.log(index);
+layout_menu.click(function () {
 	$(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
 	$(this).addClass('list-group-item-info');
 });

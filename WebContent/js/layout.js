@@ -1,6 +1,14 @@
 /**
  * Created by li_yi-pc on 10/13/2016.
  */
+
+var q1 = $.url().param('q1');
+$('input[name="q1"]').val(q1);
+var q2 = $.url().param('q2');
+$('input[name="q2"]').val(q2);
+
+
+
 var layouts = alasql('SELECT * FROM layout', []);
 var colNames = alasql('SELECT * FROM colname', []);
 var emps;
@@ -86,6 +94,9 @@ function getActiveLay(){
     return active_lay.name;
 }
 function fillTable(cols){
+    for(i=0; i<cols.length; i++){
+        theader.append('<th>'+findColName(cols[i])+'</th>');
+    }
     for (i = 0; i < emps.length; i++) {
         var emp = emps[i];
         var row = $('<tr></tr>');
@@ -165,7 +176,9 @@ layout_name.change(function () {
 $('#new-layout-form').submit(function () {
     var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
     var name = $('#new-layout-name').val();
-    alasql('INSERT INTO layout VALUES (?,?)',[l_id.toString(),name]);
+    alasql('INSERT INTO layout VALUES (?,?,?)',[l_id.toString(),name,"false"]);
+    setActiveLay(name);
+    fillTable(getColList(name));
     //save to colLayout
     var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
     var cols= $('#col-name-new').val();
@@ -174,7 +187,6 @@ $('#new-layout-form').submit(function () {
         n++;
     }
 });
-
 
 //delete layout
 $('#btn-delete-lay').click(function(){
@@ -201,18 +213,12 @@ $('#btn-delete-lay').click(function(){
         });
 });
 
-//======================================================================
-
-//update table header
+//update table
 $('.opt-layout').click(function () {
     var option = $(this).text();
     theader.children('th').remove();
     trecords.children('tr').remove();
     setActiveLay(option);
     var col_ls = getColList(getActiveLay());
-    for(i=0; i<col_ls.length; i++){
-        theader.append('<th>'+findColName(col_ls[i])+'</th>');
-    }
     fillTable(col_ls);
 });
-

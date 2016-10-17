@@ -45,9 +45,9 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#tbl-download').DataTable({
-		fixedHeader:true
-	});
+	// $('#tbl-download').DataTable({
+	// 	fixedHeader:true
+	// });
 
 });
 

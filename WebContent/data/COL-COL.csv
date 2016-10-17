@@ -1,21 +1,22 @@
 ID,DB,WEB
-1,NUMBER,Number
-2,NAME,Name
-3,SEX,Gender
-4,BIRTHDAY,Date of Birth
-5,TEL,Telephone
-6,CTCT_NAME,Emergency Contact Name
-7,CTCT_ADDR,Emergency Contact Address
-8,CTCT_TEL,Emergency Contact Tel
-9,PSPT_NO,Passport No.
-10,PSPT_DATE,Passport Date
-11,PSPT_NAME,Passport Name
-12,RENTAL,Type of Lending
-13,OR_WAGE,Ordinary Wage
-14,ADD_WAGE,Additional Wage
-15,TARGET,Target Amount
-16,REAL,Sale Amount
-17,FOOD_PRE,Food Preferences
-18,ADDR,Address
-19,FAMILY,Family
-20,EDU,Education
+1,,Photo
+2,NUMBER,Number
+3,NAME,Name
+4,SEX,Gender
+5,BIRTHDAY,Date of Birth
+6,TEL,Telephone
+7,CTCT_NAME,Emergency Contact Name
+8,CTCT_ADDR,Emergency Contact Address
+9,CTCT_TEL,Emergency Contact Tel
+10,PSPT_NO,Passport No.
+11,PSPT_DATE,Passport Date
+12,PSPT_NAME,Passport Name
+13,RENTAL,Type of Lending
+14,OR_WAGE,Ordinary Wage
+15,ADD_WAGE,Additional Wage
+16,TARGET,Target Amount
+17,REAL,Sale Amount
+18,FOOD_PRE,Food Preferences
+19,ADDR,Address
+20,FAMILY,Family
+21,EDU,Education

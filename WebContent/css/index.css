@@ -54,3 +54,12 @@
     width: 14px;
     height: 14px;
 }
+
+
+#tbl-clone{
+    display: none;
+    position: fixed;
+    top:0;
+    background-color: white;
+    z-index: 1000;
+}

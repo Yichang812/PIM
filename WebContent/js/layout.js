@@ -30,6 +30,9 @@ var edit_modal = $('#edit-layout');
 var new_modal = $('#new-layout');
 var trecords = $('#tbl-download tbody');
 var theader = $('#tbl-download thead tr');
+
+var clonet = $('#tbl-clone');
+var cloneh = $('#tbl-clone thead tr');
 var layout_menu = $('.opt-layout');
 var d_alert = $('#overlay,#dialog');
 var i;
@@ -112,6 +115,7 @@ function fillTable(cols){
 
     for(i=0; i<cols.length; i++){
         theader.append('<th>'+findColName(cols[i])+'</th>');
+        cloneh.append('<th>'+findColName(cols[i])+'</th>');
     }
     for (i = 0; i < emps.length; i++) {
         var emp = emps[i];
@@ -252,4 +256,13 @@ $('#btn-edit-lay').click(function () {
     updateColLayout(editId,cols);
     resetTable(editName);
     $('#edit-layout').modal('hide');
+});
+
+//sticky header
+$(window).scroll(function () {
+    if(window.scrollY>=200){
+        clonet.show();
+    }else{
+        clonet.hide();
+    }
 });

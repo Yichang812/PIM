@@ -1,19 +1,7 @@
-.delete-alert{
-    display: none;
-    position:absolute;
-    top:50%;
-}
-
 #new-layout-form{
     margin-bottom:50px;
 }
-.ui-dialog-buttonset{
-    padding:5px 10px;
-}
 
-.fixHeader{
-    position:fixed;
-}
 #overlay {
     position: absolute;
     top: 0;
@@ -54,4 +42,15 @@
 #dialog button {
     width: 100px;
     margin: 30px;
+}
+
+#divide-icon{
+    width: 14px;
+    height: 14px;
+    background: url("../img/divide-symbol.png") center;
+}
+#parentheses-icon{
+    background: url("../img/parentheses-symbol.png") center;
+    width: 14px;
+    height: 14px;
 }

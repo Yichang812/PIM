@@ -115,7 +115,6 @@ function fillTable(cols){
     }
     for (i = 0; i < emps.length; i++) {
         var emp = emps[i];
-        console.log(emp);
         var row = $('<tr></tr>');
         for (var n = 0; n < cols.length; n++) {
             switch (cols[n]) {

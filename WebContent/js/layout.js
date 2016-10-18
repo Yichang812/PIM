@@ -31,6 +31,7 @@ var new_modal = $('#new-layout');
 var trecords = $('#tbl-download tbody');
 var theader = $('#tbl-download thead tr');
 var layout_menu = $('.opt-layout');
+var d_alert = $('#overlay,#dialog');
 var i;
 
 
@@ -100,12 +101,21 @@ function getActiveLay(){
     var active_lay = alasql('SELECT * FROM layout WHERE active=?',["true"])[0];
     return active_lay.name;
 }
+function updateColLayout(l_id,cols){
+    var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
+    for(i = 0; i<cols.length; i++){
+        alasql('INSERT INTO colLayout VALUES (?,?,?)',[n.toString(),l_id.toString(),cols[i].toString()]);
+        n++;
+    }
+}
 function fillTable(cols){
+
     for(i=0; i<cols.length; i++){
         theader.append('<th>'+findColName(cols[i])+'</th>');
     }
     for (i = 0; i < emps.length; i++) {
         var emp = emps[i];
+        console.log(emp);
         var row = $('<tr></tr>');
         for (var n = 0; n < cols.length; n++) {
             switch (cols[n]) {
@@ -144,6 +154,13 @@ function highlightActive(name){
         }
     });
 }
+
+function resetTable(layout){
+    theader.children('th').remove();
+    trecords.children('tr').remove();
+    setActiveLay(layout);
+    fillTable(getColList(layout));
+}
 //==================================================================
 
 //setup modal content
@@ -181,7 +198,6 @@ $(function() {
 //=========================================================================
 
 
-
 //set table content
 fillTable(getColList(getActiveLay()));
 highlightActive(getActiveLay());
@@ -199,48 +215,42 @@ $('#new-layout-form').submit(function () {
     alasql('INSERT INTO layout VALUES (?,?,?)',[l_id.toString(),name,"false"]);
     setActiveLay(name);
     fillTable(getColList(name));
-    //save to colLayout
-    var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
     var cols= $('#col-name-new').val();
-    for(i = 0; i<cols.length; i++){
-        alasql('INSERT INTO colLayout VALUES (?,?,?)',[n.toString(),l_id.toString(),cols[i].toString()]);
-        n++;
-    }
+    updateColLayout(l_id,cols);
 });
 
 //delete layout
 $('#btn-delete-lay').click(function(){
     $('#edit-layout').modal('hide');
     var deleteLay = layout_name.val();
-    $('<div></div>').appendTo('body')
-        .html('<h4 style="text-align: center;margin-top: 55px">Are you sure you want to delete <strong>'+deleteLay+'?</strong></h4>')
-        .dialog({
-            resizable: false,
-            height: 200,
-            width: 400,
-            modal: true,
-            title:"Delete Layout",
-            buttons: {
-                'Yes,delete it': function () {
-                    alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
-                    alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
-                    setActiveLay(getFirstLay());
-                    fillTable(getColList(getFirstLay()));
-                    $(this).dialog("close");
-                },
-                No: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
+    $('#delete-lay').text(deleteLay);
+    d_alert.toggle();
+
+    $('#btn-yes').click(function () {
+        alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
+        alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
+        resetTable(getFirstLay());
+        d_alert.toggle();
+    });
+    $('#btn-no').click(function(){
+        d_alert.toggle();
+    });
+
 });
 
 //update table
 layout_menu.click(function () {
-    var option = $(this).text();
-    theader.children('th').remove();
-    trecords.children('tr').remove();
-    setActiveLay(option);
-    var col_ls = getColList(getActiveLay());
-    fillTable(col_ls);
+    resetTable( $(this).text());
+});
+
+//edit layout
+$('#btn-edit-lay').click(function () {
+    var editName = layout_name.val();
+    console.log(editName);
+    var editId = findIdByName(editName);
+    alasql("DELETE FROM colLayout WHERE l_id=?",[editId]);
+    var cols = $('#col-name-edit').val();
+    updateColLayout(editId,cols);
+    resetTable(editName);
+    $('#edit-layout').modal('hide');
 });

@@ -1,7 +1,6 @@
 // Yichang
 //inti tooltip function
 var layouts = alasql('SELECT * FROM layout', []);
-var layout_menu = $('.opt-layout');
 
 $(function () {
 	$('#edit-dropdown').tooltip()
@@ -19,13 +18,14 @@ $(document).ready(function () {
 
 });
 
-
-
-for (i = 0; i<layouts.length; i++){
+for (i = 0; i<layouts.length; i++) {
 	var layout = layouts[i];
-	var li = $('<li class="opt-layout"><a href="#">'+layout.name+'</a></li>');
+	var li = $('<li class="opt-layout"><a href="#">' + layout.name + '</a></li>');
 	$('#layout-list').parent().append(li);
 }
 
-layout_menu.eq(0).addClass('list-group-item-info'); //current layout
-
+$("#btn-yes").addClass("btn btn-danger btn-lg");
+$("#btn-no").addClass("btn btn-default btn-lg");
+var height = window.innerHeight / 2 - $('#dialog').height() / 2;
+var width = window.innerWidth / 2 - $('#dialog').width() / 2;
+$("#dialog").css({top:height,left:width});

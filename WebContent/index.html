@@ -2,18 +2,24 @@
 <html>
 <head>
 <script src="lib/jquery.js"></script>
+	<script src="lib/jquery-ui.js"></script>
 <link href="css/bootstrap.css" rel="stylesheet" />
 <link href="css/index.css" rel="stylesheet" />
+<link href="css/multiple-select.css" rel="stylesheet"/>
+	<link href="css/jquery-ui.theme.css" rel="stylesheet"/>
 <script src="lib/bootstrap.js"></script>
 <script src="lib/alasql.js"></script>
 <script src="lib/purl.js"></script>
-<script type="text/javascript" src="lib/jquery.techbytarun.excelexportjs.js"></script>
+<script src="lib/jquery.techbytarun.excelexportjs.js"></script>
+<script src="lib/multiple-select.js"></script>
 <script src="js/db.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width">
 <title>COMPANY</title>
+
+
 </head>
 <body>
 
@@ -75,67 +81,92 @@
 		<div class="dropdown pull-right">
 		    
 		    <button type="button" class="btn btn-default btn-sm dropdown-toggle" 
-		    		id="editDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                    id="edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 					data-placement="right" title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="editDropdown">
+            <ul class="dropdown-menu" aria-labelledby="edit-dropdown" id="dropdown-edit">
                 <li><a href="emp-form.html"><span class="glyphicon glyphicon-plus"></span> New</a></li>
-                <li><a href="#" id="editLayout" data-toggle="modal" data-target="#colSetting">Edit Column Layout</a></li>
-				<li><a href="#" id="editCol" data-toggle="modal" data-target="#customCol">Edit Custom Column</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#new-layout">Layout</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#custom-col">Custom Column</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Column Layouts</li>
-                <li><a href="#">Air Ticket</a></li>
+                <li class="dropdown-header" id="layout-list">Column Layouts</li>
             </ul>
         </div>
 
-		<button type="button" class="btn btn-success btn-sm pull-right" id="btnDownload" style="margin-right: 20px"> Download </button>
-		<table class="table table-striped" id="tblDownload">
+		<button type="button" class="btn btn-success btn-sm pull-right" id="btn-download" style="margin-right: 20px"> Download </button>
+
+		<table class="table table-striped" id="tbl-download">
 			<thead>
-				<tr>
-					<th></th>
-					<th>Number</th>
-					<th>Name</th>
-					<th>Gender</th>
-					<th>Date of Birth</th>
-					<th>Telephone</th>
-				</tr>
+			<tr>
+			</tr>
 			</thead>
 			<tbody id="tbody-emps"></tbody>
 		</table>
+
+
+
 	</div>
 
-	<!-- Modal for col layout-->
-	<div class="modal fade" id="colSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<!-- Modal for create layout-->
+	<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Column Layout</h4>
+					<h4 class="modal-title">New Column Layout</h4>
+				</div>
+				<div class="modal-body">
+					<form id="new-layout-form">
+						<div class="form-group name-inputor">
+							<label for="new-layout-name" class="control-label">Name:</label>
+							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
+						</div>
+						<div class="form-group col-selector">
+							<label for="col-name-new" class="control-label">Column:</label>
+							<select id="col-name-new" multiple="multiple">
+							</select>
+						</div>
+                        <button type="submit" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
+                        <button type="button" class="btn btn-default pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>
+
+					</form>
+				</div>
+				<div class="modal-footer">
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Model for edit layout-->
+	<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Edit Column Layout</h4>
 				</div>
 				<div class="modal-body">
 					<form>
-						<div class="form-group">
+						<div class="form-group layout-selector">
 							<label for="layout-name" class="control-label">Layout:</label>
-
 							<select class="form-control" id="layout-name">
-								<option>CPF</option>
-								<option>Health Insurance</option>
-								<option>Monthly Party</option>
-								<option>Salesperson Performance</option>
-								<option>+ Add a new layout</option>
 							</select>
 						</div>
-						<div class="form-group">
 
+						<div class="form-group col-selector">
+							<label for="col-name-edit" class="control-label">Column:</label>
+							<select id="col-name-edit" multiple="multiple">
+							</select>
 						</div>
 
 					</form>
 				</div>
-
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>
+					<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>
 
 				</div>
 			</div>
@@ -144,7 +175,7 @@
 
 	<!--Modal for custom col-->
 
-	<div class="modal fade" id="customCol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="custom-col" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -154,13 +185,10 @@
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label for="column-name" class="control-label">Name:</label>
+							<label for="custom-col-name" class="control-label">Name:</label>
 
-							<select class="form-control" id="column-name">
-								<option>CPF</option>
-								<option>Health Insurance</option>
-								<option>Monthly Party</option>
-								<option>Salesperson Performance</option>
+							<select class="form-control" id="custom-col-name">
+								<option>Sellers Performance</option>
 								<option>+ Add a new layout</option>
 							</select>
 						</div>
@@ -173,13 +201,26 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-info">Save</button>
 
 				</div>
 			</div>
 		</div>
 	</div>
 
+    <div id="overlay"></div>
+
+    <div id="dialog">
+        <span>Do you want to Delete <strong id="delete-lay"></strong>?</span>
+        <span>This operation will delete the layout setting.<br>This operation can not be undone.</span>
+        <div>
+            <button id="btn-yes">Yes</button>
+            <button id="btn-no">No</button>
+        </div>
+    </div>
+
 	<script src="js/index.js"></script>
+	<script src="js/customcol.js"></script>
+	<script src="js/layout.js"></script>
 </body>
 </html>

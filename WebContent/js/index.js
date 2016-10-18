@@ -1,63 +1,31 @@
-// parse request params
-var q1 = $.url().param('q1');
-$('input[name="q1"]').val(q1);
-var q2 = $.url().param('q2');
-$('input[name="q2"]').val(q2);
-
-// read data from database
-var emps;
-if (q1) {
-	emps = alasql('SELECT * FROM emp WHERE number LIKE ?', [ '%' + q1 + '%' ]);
-} else if (q2) {
-	emps = alasql('SELECT * FROM emp WHERE name LIKE ?', [ '%' + q2 + '%' ]);
-} else {
-	emps = alasql('SELECT * FROM emp', []);
-}
-
-// create employee list
-var tbody = $('#tbody-emps');
-for (var i = 0; i < emps.length; i++) {
-	var emp = emps[i];
-	var tr = $('<tr></tr>');
-	tr.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-	tr.append('<td><a href="emp.html?id=' + emp.id + '">' + emp.number + '</a></td>');
-	tr.append('<td>' + emp.name + '</td>');
-	tr.append('<td>' + DB.choice(emp.sex) + '</td>');
-	tr.append('<td>' + emp.birthday + '</td>');
-	tr.append('<td>' + emp.tel + '</td>');
-	tr.appendTo(tbody);
-}
-
 // Yichang
 //inti tooltip function
+var layouts = alasql('SELECT * FROM layout', []);
+
 $(function () {
-	$('#editDropdown').tooltip()
-})
-
-//get all propety names
-var data = [{
-  "firstName": "John",
-  "lastName": "Doe"
-}, {
-  "firstName": "Anna",
-  "car": true
-}, {
-  "firstName": "Peter",
-  "lastName": "Jones"
-}];
-
-var uniqueKeys = Object.keys(data.reduce(function(result, obj) {
-  return Object.assign(result, obj);
-}, {}));
-
-console.log(uniqueKeys);
+	$('#edit-dropdown').tooltip()
+});
 
 
+//download table as Excel
 $(document).ready(function () {
-	$("#btnDownload").click(function () {
-		$("#tblDownload").excelexportjs({
+	$('#btn-download').click(function () {
+		$('#tbl-download').excelexportjs({
 			containerid: "tblDownload"
 			, datatype: 'table'
 		});
 	});
+
 });
+
+for (i = 0; i<layouts.length; i++) {
+	var layout = layouts[i];
+	var li = $('<li class="opt-layout"><a href="#">' + layout.name + '</a></li>');
+	$('#layout-list').parent().append(li);
+}
+
+$("#btn-yes").addClass("btn btn-danger btn-lg");
+$("#btn-no").addClass("btn btn-default btn-lg");
+var height = window.innerHeight / 2 - $('#dialog').height() / 2;
+var width = window.innerWidth / 2 - $('#dialog').width() / 2;
+$("#dialog").css({top:height,left:width});

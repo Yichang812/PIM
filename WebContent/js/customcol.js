@@ -6,10 +6,12 @@ function createCol(col,lay){
     var c = alasql('SELECT MAX(id) + 1 as id FROM colname')[0].id;
     var l = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
     alasql('INSERT INTO colname VALUES(?,?,?)',[c.toString(),col.toLowerCase(),col]);
-    alasql('ALTER TABLE emp ADD COLUMN ? DECIMAL',[col]); //how to add a column that does not have a fixed name
+    alasql('ALTER TABLE emp ADD COLUMN '+col+' STRING');
     alasql('INSERT INTO colLayout VALUES(?,?,?)',[l.toString(),findIdByName(lay).toString(),c.toString()]);
     return c;
 }
+
+
 
 function setCol(col,vals){
     for(var i = 0; i<vals.length; i++){
@@ -69,4 +71,9 @@ function fillMetric(col1, col2, op, format){
             break;
     }
 }
+
+
+$('#btn-save-col').click(function () {
+    createCol('test','CPF');
+});
 

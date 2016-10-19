@@ -44,17 +44,6 @@
     margin: 30px;
 }
 
-#divide-icon{
-    width: 14px;
-    height: 14px;
-    background: url("../img/divide-symbol.png") center;
-}
-#parentheses-icon{
-    background: url("../img/parentheses-symbol.png") center;
-    width: 14px;
-    height: 14px;
-}
-
 
 #tbl-clone{
     display: none;
@@ -62,4 +51,9 @@
     top:0;
     background-color: white;
     z-index: 1000;
+}
+
+#tbl-download td,#tbl-clone th{
+    width:200px;
+    overflow-x: hidden;
 }

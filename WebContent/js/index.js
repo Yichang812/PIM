@@ -9,12 +9,18 @@ $(function () {
 
 //download table as Excel
 $(document).ready(function () {
-	$('#btn-download').click(function () {
+	var downloadBtn = $('#btn-download');
+	downloadBtn.click(function () {
 		$('#tbl-download').excelexportjs({
 			containerid: "tblDownload"
 			, datatype: 'table'
 		});
 	});
+
+	downloadBtn.mouseover(function () {
+
+	});
+
 
 });
 

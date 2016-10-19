@@ -30,11 +30,13 @@ var edit_modal = $('#edit-layout');
 var new_modal = $('#new-layout');
 var trecords = $('#tbl-download tbody');
 var theader = $('#tbl-download thead tr');
-
+var layoutInput = $('#new-layout-name');
 var clonet = $('#tbl-clone');
 var cloneh = $('#tbl-clone thead tr');
 var layout_menu = $('.opt-layout');
 var d_alert = $('#overlay,#dialog');
+var format = $('#format').find('li');
+var operation = $('#operation').find('input');
 var i;
 
 
@@ -186,6 +188,14 @@ for (i = 0; i<colNames.length; i++){
     col_name_edit.append(c_op.clone());
 }
 
+
+var colList = getColList(getActiveLay());
+for(i = 0; i<colList.length; i++){
+    var op = $('<li><a href="#">'+findColName(colList[i])+'</a></li>');
+    $('#col1,#col2').append(op);
+}
+
+
 $('#btn-edit').click(function () {
     new_modal.modal('hide');
     edit_modal.modal('show');
@@ -217,19 +227,25 @@ layout_name.change(function () {
 });
 
 //save new layout
-$('#new-layout-form').submit(function () {
+$('#btn-create-lay').click(function () {
     var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
-    var name = $('#new-layout-name').val();
-    alasql('INSERT INTO layout VALUES (?,?,?)',[l_id.toString(),name,"false"]);
-    setActiveLay(name);
-    fillTable(getColList(name));
-    var cols= $('#col-name-new').val();
-    updateColLayout(l_id,cols);
+    var name = layoutInput.val();
+    if(name!='') {
+        alasql('INSERT INTO layout VALUES (?,?,?)', [l_id.toString(), name, "false"]);
+        setActiveLay(name);
+        fillTable(getColList(name));
+        var cols = $('#col-name-new').val();
+        updateColLayout(l_id, cols);
+        new_modal.modal('hide');
+    }else{
+        $('.name-inputor').attr('class','has-error');
+        layoutInput.after('<span class="help-block">Please fill in the name of the layout</span>');
+    }
 });
 
 //delete layout
 $('#btn-delete-lay').click(function(){
-    $('#edit-layout').modal('hide');
+    edit_modal.modal('hide');
     var deleteLay = layout_name.val();
     $('#delete-lay').text(deleteLay);
     d_alert.toggle();
@@ -271,3 +287,39 @@ $(window).scroll(function () {
         clonet.hide();
     }
 });
+
+var col1, col2;
+var symbol = 0;
+
+format.click(function(){
+    console.log($(this).attr('value'));
+});
+
+operation.change(function () {
+    symbol = $(this).val();
+    updateMetricDef(col1,symbol,col2);
+});
+
+$('#col1 li').click(function () {
+    col1 = $(this).text();
+    updateMetricDef(col1,symbol,col2);
+});
+
+$('#col2 li').click(function () {
+    col2 = $(this).text();
+    updateMetricDef(col1,symbol,col2);
+});
+
+function updateMetricDef(col1, op, col2){
+    var symbols = ['&#43','&#45','&#215','&#247'];
+    if(col1){
+        var c1 = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+col1+'</button>');
+    }
+    if(col2){
+        var c2 = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+col2+'</button>');
+    }
+    if(op){
+        var oper = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+symbols[op]+'</button>')
+    }
+    $('#def-panel').empty().append(c1).append(oper).append(c2);
+}

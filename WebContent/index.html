@@ -72,15 +72,15 @@
 				<input name="q2" type="text" class="form-control"
 					placeholder="part of name">
 			</div>
-			<button type="submit" class="btn btn-primary">
+			<button type="submit" class="btn btn-info">
 				<span class="glyphicon glyphicon-search"></span> Search
 			</button>
 		</form>
 		<hr>
 
-		<div class="dropdown" style="display: inline-block">
+		<div class="dropdown pull-right" style="display: inline-block">
 		    
-		    <button type="button" class="btn btn-default btn-sm dropdown-toggle" 
+		    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                     id="edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 					data-placement="top" title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
@@ -100,7 +100,7 @@
         </button>
         <br>
         <div class="table-responsive">
-            <table class="table table-striped" id="tbl-download">
+            <table class="table table-hover" id="tbl-download">
                 <thead>
                 <tr>
                 </tr>
@@ -110,7 +110,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped" id="tbl-clone">
+            <table class="table" id="tbl-clone">
                 <thead>
                 <tr>
                 </tr>
@@ -121,70 +121,71 @@
 
 	</div>
 
-	<!-- Modal for create layout-->
-	<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">New Column Layout</h4>
-				</div>
-				<div class="modal-body">
-					<form id="new-layout-form">
-						<div class="form-group name-inputor">
-							<label for="new-layout-name" class="control-label">Name:</label>
-							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
-						</div>
-						<div class="form-group col-selector">
-							<label for="col-name-new" class="control-label">Column:</label>
-							<select id="col-name-new" multiple="multiple">
-							</select>
-						</div>
-                        <button type="submit" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
-                        <button type="button" class="btn btn-default pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>
+	<!--&lt;!&ndash; Modal for create layout&ndash;&gt;-->
+	<!--<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">-->
+		<!--<div class="modal-dialog" role="document">-->
+			<!--<div class="modal-content">-->
+				<!--<div class="modal-header">-->
+					<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+					<!--<h4 class="modal-title">New Column Layout</h4>-->
+				<!--</div>-->
+				<!--<div class="modal-body">-->
+					<!--<form id="new-layout-form">-->
+						<!--<div class="form-group name-inputor">-->
+							<!--<label for="new-layout-name" class="control-label">Name:</label>-->
+							<!--<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">-->
+						<!--</div>-->
+						<!--<div class="form-group col-selector">-->
+							<!--<label for="col-name-new" class="control-label">Column:</label>-->
+							<!--<select id="col-name-new" multiple="multiple">-->
+							<!--</select>-->
+						<!--</div>-->
+                        <!--<button type="button" class="btn btn-info pull-right" id="btn-create-lay">Save</button>-->
+                        <!--<button type="button" class="btn btn-warning pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>-->
+						<!--<button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="width: 58px;margin-right:10px">Close</button>-->
 
-					</form>
-				</div>
-				<div class="modal-footer">
+					<!--</form>-->
+				<!--</div>-->
+				<!--<div class="modal-footer">-->
 
 
-				</div>
-			</div>
-		</div>
-	</div>
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+	<!--</div>-->
 
-	<!--Model for edit layout-->
-	<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Edit Column Layout</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group layout-selector">
-							<label for="layout-name" class="control-label">Layout:</label>
-							<select class="form-control" id="layout-name">
-							</select>
-						</div>
+	<!--&lt;!&ndash;Model for edit layout&ndash;&gt;-->
+	<!--<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">-->
+		<!--<div class="modal-dialog" role="document">-->
+			<!--<div class="modal-content">-->
+				<!--<div class="modal-header">-->
+					<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+					<!--<h4 class="modal-title">Edit Column Layout</h4>-->
+				<!--</div>-->
+				<!--<div class="modal-body">-->
+					<!--<form>-->
+						<!--<div class="form-group layout-selector">-->
+							<!--<label for="layout-name" class="control-label">Layout:</label>-->
+							<!--<select class="form-control" id="layout-name">-->
+							<!--</select>-->
+						<!--</div>-->
 
-						<div class="form-group col-selector">
-							<label for="col-name-edit" class="control-label">Column:</label>
-							<select id="col-name-edit" multiple="multiple">
-							</select>
-						</div>
+						<!--<div class="form-group col-selector">-->
+							<!--<label for="col-name-edit" class="control-label">Column:</label>-->
+							<!--<select id="col-name-edit" multiple="multiple">-->
+							<!--</select>-->
+						<!--</div>-->
 
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>
-					<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>
+					<!--</form>-->
+				<!--</div>-->
+				<!--<div class="modal-footer">-->
+					<!--<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>-->
+					<!--<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>-->
 
-				</div>
-			</div>
-		</div>
-	</div>
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+	<!--</div>-->
 
 	<!--Modal for custom col-->
 
@@ -209,27 +210,22 @@
 									Column1
 									<span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Name</a></li>
-									<li><a href="#">Number</a></li>
+								<ul class="dropdown-menu" id="col1">
 								</ul>
 							</div>
 
-							<div class="btn-group" data-toggle="buttons">
+							<div class="btn-group" data-toggle="buttons" id="operation">
 								<label class="btn btn-default active">
-									<input type="radio" name="options" id="option1" autocomplete="off" checked> <span class="glyphicon glyphicon-plus"></span>
+									<input type="radio" name="options" id="option1" autocomplete="off" value="0" checked> <strong>&#43</strong>
 								</label>
 								<label class="btn btn-default">
-									<input type="radio" name="options" id="option2" autocomplete="off"> <span class="glyphicon glyphicon-minus"></span>
+									<input type="radio" name="options" id="option2" autocomplete="off" value="1"> <strong>&#45</strong>
 								</label>
 								<label class="btn btn-default">
-									<input type="radio" name="options" id="option4" autocomplete="off"> <span class="glyphicon glyphicon-remove"></span>
+									<input type="radio" name="options" id="option4" autocomplete="off" value="2"> <strong>&#215</strong>
 								</label>
 								<label class="btn btn-default">
-									<input type="radio" name="options" id="option5" autocomplete="off"> <span class="glyphicon" id="divide-icon"></span>
-								</label>
-								<label class="btn btn-default">
-									<input type="radio" name="options" id="option6" autocomplete="off"> <span class="glyphicon" span id="parentheses-icon"></span>
+									<input type="radio" name="options" id="option5" autocomplete="off" value="3"> <strong>&#247</strong>
 								</label>
 							</div>
 							<div class="btn-group" role="group">
@@ -237,9 +233,7 @@
 									Column2
 									<span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Name</a></li>
-									<li><a href="#">Number</a></li>
+								<ul class="dropdown-menu" id="col2">
 								</ul>
 							</div>
 							<div class="btn-group" role="group">
@@ -247,15 +241,15 @@
 									Format
 									<span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Number(1,2,3)</a></li>
-									<li><a href="#">Percent(%)</a></li>
-									<li><a href="#">Currency($)</a></li>
+								<ul class="dropdown-menu" id="format">
+									<li value="1"><a href="#">Number(1,2,3)</a></li>
+									<li value="2"><a href="#">Percent(%)</a></li>
+									<li value="3"><a href="#">Currency($)</a></li>
 								</ul>
 							</div>
 						</div>
 						<div id="definition" class="panel panel-default" style="margin-top: 10px">
-							<div class="panel-body"><p class="text-muted">Select the column and operation to define your metric.</p></div>
+							<div class="panel-body" id="def-panel"><p class="text-muted">Select the column and operation to define your metric.</p></div>
 						</div>
 
 
@@ -264,7 +258,7 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-info">Save</button>
+					<button type="button" class="btn btn-info" id="btn-save-col">Save</button>
 
 				</div>
 			</div>

@@ -78,11 +78,11 @@
 		</form>
 		<hr>
 
-		<div class="dropdown pull-right">
+		<div class="dropdown" style="display: inline-block">
 		    
 		    <button type="button" class="btn btn-default btn-sm dropdown-toggle" 
                     id="edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-					data-placement="right" title="Edit">
+					data-placement="top" title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="edit-dropdown" id="dropdown-edit">
@@ -94,23 +94,30 @@
             </ul>
         </div>
 
-		<button type="button" class="btn btn-success btn-sm pull-right" id="btn-download" style="margin-right: 20px"> Download </button>
+		<button type="button" class="btn btn-success btn-sm" id="btn-download" style="margin-right: 20px"
+        data-toggle="tooltip" title="Download" data-placement="top">
+            <span class="glyphicon glyphicon-download-alt"></span>
+        </button>
+        <br>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tbl-download">
+                <thead>
+                <tr>
+                </tr>
+                </thead>
+                <tbody id="tbody-emps"></tbody>
+            </table>
+        </div>
 
-		<table class="table table-striped" id="tbl-download">
-			<thead>
-			<tr>
-			</tr>
-			</thead>
-			<tbody id="tbody-emps"></tbody>
-		</table>
-
-		<table class="table table-striped" id="tbl-clone">
-			<thead>
-			<tr>
-			</tr>
-			</thead>
-			<tbody id="tbody-clone"></tbody>
-		</table>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tbl-clone">
+                <thead>
+                <tr>
+                </tr>
+                </thead>
+                <tbody id="tbody-clone"></tbody>
+            </table>
+        </div>
 
 	</div>
 

@@ -67,6 +67,10 @@ function findColDB(c_id){
     var coldb = alasql('SELECT db_name FROM colname WHERE id=?',[c_id])[0];
     return coldb.db_name;
 }
+function findColId(name){
+    var colId = alasql('SELECT id FROM colname WHERE name=?',[name])[0];
+    return colId.id;
+}
 function findAddrById(e_id){
     var addr = alasql('SELECT * FROM addr WHERE emp=?',[e_id])[0];
     //zip STRING, state STRING, city STRING, street STRING, bldg STRING, house INT
@@ -161,6 +165,7 @@ function highlightActive(name){
 function resetTable(layout){
     theader.children('th').remove();
     trecords.children('tr').remove();
+    cloneh.children('th').remove();
     setActiveLay(layout);
     fillTable(getColList(layout));
 }
@@ -249,7 +254,6 @@ layout_menu.click(function () {
 //edit layout
 $('#btn-edit-lay').click(function () {
     var editName = layout_name.val();
-    console.log(editName);
     var editId = findIdByName(editName);
     alasql("DELETE FROM colLayout WHERE l_id=?",[editId]);
     var cols = $('#col-name-edit').val();
@@ -262,6 +266,7 @@ $('#btn-edit-lay').click(function () {
 $(window).scroll(function () {
     if(window.scrollY>=200){
         clonet.show();
+        clonet.width(theader.width());
     }else{
         clonet.hide();
     }

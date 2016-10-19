@@ -3,7 +3,7 @@
 var layouts = alasql('SELECT * FROM layout', []);
 
 $(function () {
-	$('#edit-dropdown').tooltip()
+	$('#edit-dropdown,#btn-download').tooltip()
 });
 
 

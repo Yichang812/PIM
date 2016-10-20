@@ -4,7 +4,16 @@
 
 The name is short for Personal Information Management. The functions that allow user to costomise columns in Employee List page are going to be added in the existing system.
 
-- [x] Sticky table header [Git](https://github.com/DataTables/FixedHeader)
+I designed 3 main features:
+
+1. Editable column layout
+2. Custom columns
+3. Download table
+
+The features are divided into the following tasks:
+
+- [x] Download table as Excel file (by [ExcelExportJs](https://github.com/tarunbatta/ExcelExportJs))
+- [x] Sticky table header
 - [x] Display selected columns
 - [x] Create layout
 - [x] Edit layout
@@ -15,5 +24,5 @@ The name is short for Personal Information Management. The functions that allow 
 - [x] Maybe I need to change the data in database for demonstration
 - [ ] Check if the layout name exists
 - [ ] Check if the column name exists
-
-
+- [ ] *Support other download format*
+- [ ] Testing! Testing! Testing!

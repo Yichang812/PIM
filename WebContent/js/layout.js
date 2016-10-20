@@ -116,14 +116,11 @@ var tool4view = {
         }
         for (var i = 0; i < emps.length; i++) {
             var emp = emps[i];
-            var row = $('<tr></tr>');
+            var row = $('<tr id="'+emp.id+'"></tr>');
             for (var n = 0; n < cols.length; n++) {
                 switch (cols[n]) {
                     case 1:
                         row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-                        break;
-                    case 2:
-                        row.append('<td><a href="emp.html?id=' + emp.id + '">' + emp.number + '</a></td>');
                         break;
                     case 4:
                         row.append('<td>' + DB.choice(emp.sex) + '</td>');
@@ -264,6 +261,10 @@ function updateMetricDef(ob){
 //init table content
 tool4view.init();
 
+
+$('tr').click(function () {
+    window.location.href = 'emp.html?id=' + $(this).attr('id');
+});
 //update table
 layout_menu.click(function () {
     tool4view.resetTable( $(this).text());
@@ -298,17 +299,17 @@ $('#btn-delete-lay').click(function(){
     $('#delete-lay').text(deleteLay);
 
     edit_modal.modal('hide');
-    d_alert.toggle();
+    d_alert.show();
 
     $('#btn-yes').click(function () {
         alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
         alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
         tool4view.resetTable(tool4view.getFirstLay());
-        d_alert.toggle();
+        d_alert.hide();
         location.reload(true);
     });
     $('#btn-no').click(function(){
-        d_alert.toggle();
+        d_alert.hide();
     });
 
 });

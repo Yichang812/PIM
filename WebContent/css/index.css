@@ -1,19 +1,7 @@
-.delete-alert{
-    display: none;
-    position:absolute;
-    top:50%;
-}
-
 #new-layout-form{
     margin-bottom:50px;
 }
-.ui-dialog-buttonset{
-    padding:5px 10px;
-}
 
-.fixHeader{
-    position:fixed;
-}
 #overlay {
     position: absolute;
     top: 0;
@@ -54,4 +42,18 @@
 #dialog button {
     width: 100px;
     margin: 30px;
+}
+
+
+#tbl-clone{
+    display: none;
+    position: fixed;
+    top:0;
+    background-color: white;
+    z-index: 1000;
+}
+
+#tbl-download td,#tbl-clone th{
+    width:200px;
+    overflow-x: hidden;
 }

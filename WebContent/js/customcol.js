@@ -102,6 +102,7 @@ function fillCol(content,format,col){
 
 
 $('#btn-save-col').click(function () {
+
     createCol('test','CPF');
 });
 

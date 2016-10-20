@@ -1,10 +1,15 @@
 // Yichang
 //inti tooltip function
-var layouts = alasql('SELECT * FROM layout', []);
+var my_db = {
+	layouts : alasql('SELECT * FROM layout', []),
+	colNames : alasql('SELECT * FROM colname', [])
+};
+var d_dialog = $('#dialog');
+var dialog = {
+	height : (window.innerHeight / 2 - d_dialog.height() / 2),
+	width : (window.innerWidth / 2 - d_dialog.width() / 2)
+};
 
-$(function () {
-	$('#edit-dropdown,#btn-download').tooltip()
-});
 
 
 //download table as Excel
@@ -17,21 +22,23 @@ $(document).ready(function () {
 		});
 	});
 
-	downloadBtn.mouseover(function () {
+	$('#edit-dropdown').tooltip();
 
+	downloadBtn.tooltip();
+
+	$('#btn-format').popover({
+		trigger:'hover',
+		placement:'right',
+		container: 'body',
+		content:'Choose the kind of formatting you\' like for the column contents'
 	});
-
 
 });
 
-for (i = 0; i<layouts.length; i++) {
-	var layout = layouts[i];
-	var li = $('<li class="opt-layout"><a href="#">' + layout.name + '</a></li>');
-	$('#layout-list').parent().append(li);
+for (var i = 0; i<my_db.layouts.length; i++) {
+    var layout = my_db.layouts[i];
+    var li = $('<li class="opt-layout"><a href="#">' + layout.name + '</a></li>');
+    $('#layout-list').parent().append(li);
 }
 
-$("#btn-yes").addClass("btn btn-danger btn-lg");
-$("#btn-no").addClass("btn btn-default btn-lg");
-var height = window.innerHeight / 2 - $('#dialog').height() / 2;
-var width = window.innerWidth / 2 - $('#dialog').width() / 2;
-$("#dialog").css({top:height,left:width});
+d_dialog.css({top:dialog.height,left:dialog.width});

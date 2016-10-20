@@ -29,46 +29,74 @@ function getColVal(col){
     return vals;
 }
 
-function getSum(v1, v2){
+function getSum(v1, v2, format){
+    var result = [];
+    for(var i = 0; i<v1.length; i++){
+        var num1 = parseFloat(v1[i]);
+        var num2 = parseFloat(v2[i]);
 
+        result.push(num1 + num2);
+    }
+    return result;
 }
 
-function getDifference(v1, v2){
+function getDifference(v1, v2, format){
+    var result = [];
+    for(var i = 0; i<v1.length; i++){
+        var num1 = parseFloat(v1[i]);
+        var num2 = parseFloat(v2[i]);
 
+        result.push(num1 - num2);
+    }
+    return result;
 }
 
-function getProduct(v1, v2){
+function getProduct(v1, v2, format){
+    var result = [];
+    for(var i = 0; i<v1.length; i++){
+        var num1 = parseFloat(v1[i]);
+        var num2 = parseFloat(v2[i]);
 
+        result.push(num1 * num2);
+    }
+    return result;
 }
 
 function getQuotient(v1, v2){
+    var result = [];
+    for(var i = 0; i<v1.length; i++){
+        var num1 = parseFloat(v1[i]);
+        var num2 = parseFloat(v2[i]);
 
+        result.push(num1 / num2);
+    }
+    return result;
 }
 
-function fillMetric(col1, col2, op, format){
+function setMetric(col1, col2, op, format, col){
     var vals_1 = getColVal(col1);
     var vals_2 = getColVal(col2);
     var result = [];
     switch (op){
-        case 1://plus
+        case 0://plus
             result = getSum(vals_1,vals_2);
             break;
-        case 2://minus
+        case 1://minus
             result = getDifference(vals_1,vals_2);
             break;
-        case 3://multiply
+        case 2://multiply
             result = getProduct(vals_1,vals_2);
             break;
-        case 4://divide
+        case 3://divide
             result = getQuotient(vals_1,vals_2);
+            break;
     }
-    switch (format){
-        case 1://int
-            break;
-        case 2://percent
-            break;
-        case 3://currency
-            break;
+    fillCol(result,format,col);
+}
+
+function fillCol(content,format,col){
+    for(var i = 0; i<content.length; i++){
+        alasql('UPDATE emp SET '+col+' =? WHERE ');
     }
 }
 

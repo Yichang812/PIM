@@ -72,7 +72,7 @@
 				<input name="q2" type="text" class="form-control"
 					placeholder="part of name">
 			</div>
-			<button type="submit" class="btn btn-info">
+			<button type="submit" class="btn btn-primary">
 				<span class="glyphicon glyphicon-search"></span> Search
 			</button>
 		</form>
@@ -121,73 +121,73 @@
 
 	</div>
 
-	<!--&lt;!&ndash; Modal for create layout&ndash;&gt;-->
-	<!--<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">-->
-		<!--<div class="modal-dialog" role="document">-->
-			<!--<div class="modal-content">-->
-				<!--<div class="modal-header">-->
-					<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-					<!--<h4 class="modal-title">New Column Layout</h4>-->
-				<!--</div>-->
-				<!--<div class="modal-body">-->
-					<!--<form id="new-layout-form">-->
-						<!--<div class="form-group name-inputor">-->
-							<!--<label for="new-layout-name" class="control-label">Name:</label>-->
-							<!--<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">-->
-						<!--</div>-->
-						<!--<div class="form-group col-selector">-->
-							<!--<label for="col-name-new" class="control-label">Column:</label>-->
-							<!--<select id="col-name-new" multiple="multiple">-->
-							<!--</select>-->
-						<!--</div>-->
-                        <!--<button type="button" class="btn btn-info pull-right" id="btn-create-lay">Save</button>-->
-                        <!--<button type="button" class="btn btn-warning pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>-->
-						<!--<button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="width: 58px;margin-right:10px">Close</button>-->
+	<!-- Modal for create layout-->
+	<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">New Column Layout</h4>
+				</div>
+				<div class="modal-body">
+					<form id="new-layout-form">
+						<div class="form-group name-inputor">
+							<label for="new-layout-name" class="control-label">Name:</label>
+							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
+						</div>
+						<div class="form-group col-selector">
+							<label for="col-name-new" class="control-label">Column:</label>
+							<select id="col-name-new" multiple="multiple">
+							</select>
+						</div>
+                        <button type="button" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
+                        <button type="button" class="btn btn-warning pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>
+						<button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="width: 58px;margin-right:10px">Close</button>
 
-					<!--</form>-->
-				<!--</div>-->
-				<!--<div class="modal-footer">-->
+					</form>
+				</div>
+				<div class="modal-footer">
 
 
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<!--&lt;!&ndash;Model for edit layout&ndash;&gt;-->
-	<!--<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">-->
-		<!--<div class="modal-dialog" role="document">-->
-			<!--<div class="modal-content">-->
-				<!--<div class="modal-header">-->
-					<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-					<!--<h4 class="modal-title">Edit Column Layout</h4>-->
-				<!--</div>-->
-				<!--<div class="modal-body">-->
-					<!--<form>-->
-						<!--<div class="form-group layout-selector">-->
-							<!--<label for="layout-name" class="control-label">Layout:</label>-->
-							<!--<select class="form-control" id="layout-name">-->
-							<!--</select>-->
-						<!--</div>-->
+	<!--Model for edit layout-->
+	<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Edit Column Layout</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group layout-selector">
+							<label for="layout-name" class="control-label">Layout:</label>
+							<select class="form-control" id="layout-name">
+							</select>
+						</div>
 
-						<!--<div class="form-group col-selector">-->
-							<!--<label for="col-name-edit" class="control-label">Column:</label>-->
-							<!--<select id="col-name-edit" multiple="multiple">-->
-							<!--</select>-->
-						<!--</div>-->
+						<div class="form-group col-selector">
+							<label for="col-name-edit" class="control-label">Column:</label>
+							<select id="col-name-edit" multiple="multiple">
+							</select>
+						</div>
 
-					<!--</form>-->
-				<!--</div>-->
-				<!--<div class="modal-footer">-->
-					<!--<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>-->
-					<!--<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>-->
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>
+					<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>
 
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<!--Modal for custom col-->
+	Modal for custom col
 
 	<div class="modal fade" id="custom-col" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -237,8 +237,9 @@
 								</ul>
 							</div>
 							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Format
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+										id="btn-format" data-toggle="popover" data-trigger="focus">
+									<span id="format-text">Format</span>
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" id="format">
@@ -271,13 +272,13 @@
         <span>Do you want to Delete <strong id="delete-lay"></strong>?</span>
         <span>This operation will delete the layout setting.<br>This operation can not be undone.</span>
         <div>
-            <button id="btn-yes">Yes</button>
-            <button id="btn-no">No</button>
+            <button class="btn btn-danger btn-lg" id="btn-yes">Delete</button>
+            <button class="btn btn-default btn-lg" id="btn-no">No</button>
         </div>
     </div>
 
 	<script src="js/index.js"></script>
-	<script src="js/customcol.js"></script>
 	<script src="js/layout.js"></script>
+	<script src="js/customcol.js"></script>
 </body>
 </html>

@@ -40,21 +40,24 @@ var operation = $('#operation').find('input');
 
 
 //Tools
-
 function findIdByName(name){
     var id = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
     return id.id;
 }
+
 function findColName(c_id){
     var name = alasql('SELECT web FROM colname WHERE id=?',[c_id])[0];
     return name.web;
 }
+
 function findColDB(c_id){
     var coldb = alasql('SELECT db_name FROM colname WHERE id=?',[c_id])[0];
     return coldb.db_name;
 }
+
 function findColId(name){
-    var colId = alasql('SELECT id FROM colname WHERE name=?',[name])[0];
+    var colId = alasql('SELECT id FROM colname WHERE web=?',[name])[0];
+    console.log(colId);
     return colId.id;
 }
 
@@ -217,27 +220,29 @@ $(function() {
 //custom column modal
 
 
-var metirc_def = {
-    symbol : 0
+var metric_def = {
+    symbol : 0,
+    format : 1
 };
 
 format.click(function(){
     $('#format-text').text($(this).text());
+    metric_def.format = $(this).attr('value')
 });
 
 operation.change(function () {
-    metirc_def.symbol = $(this).val();
-    updateMetricDef(metirc_def);
+    metric_def.symbol = $(this).val();
+    updateMetricDef(metric_def);
 });
 
 $('#col1').find('li').click(function () {
-    metirc_def['col1'] = $(this).text();
-    updateMetricDef(metirc_def);
+    metric_def['col1'] = $(this).text();
+    updateMetricDef(metric_def);
 });
 
 $('#col2').find('li').click(function () {
-    metirc_def['col2'] = $(this).text();
-    updateMetricDef(metirc_def);
+    metric_def['col2'] = $(this).text();
+    updateMetricDef(metric_def);
 });
 
 function updateMetricDef(ob){

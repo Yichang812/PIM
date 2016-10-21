@@ -22,7 +22,9 @@ The features are divided into the following tasks:
 - [x] Define metric
 - [x] Read the definition and calculate the result
 - [x] Maybe I need to change the data in database for demonstration
-- [ ] Check if the layout name exists
-- [ ] Check if the column name exists
+- [x] Check if the layout name exists
+- [x] Check if the column name exists
+- [ ] Only show columns with data types like INT and FLOAT
+- [ ] Allow user to define the format of the result
 - [ ] *Support other download format*
 - [ ] Testing! Testing! Testing!

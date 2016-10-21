@@ -1,7 +1,3 @@
-/**
- * Created by li_yi-pc on 10/13/2016.
- */
-
 var q1 = $.url().param('q1');
 $('input[name="q1"]').val(q1);
 var q2 = $.url().param('q2');
@@ -36,43 +32,34 @@ var layout_menu = $('.opt-layout');
 var d_alert = $('#overlay,#dialog');
 var format = $('#format').find('li');
 var operation = $('#operation').find('input');
+var lay_name_input = $('.lay-name-input');
 
 
 
 //Tools
 function findIdByName(name){
-    var id = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
-    return id.id;
+    return alasql('COLUMN OF SELECT id FROM layout WHERE name=?',[name])[0];
 }
 
 function findColName(c_id){
-    var name = alasql('SELECT web FROM colname WHERE id=?',[c_id])[0];
-    return name.web;
+    return alasql('COLUMN OF SELECT web FROM colname WHERE id=?',[c_id])[0];
 }
 
 function findColDB(c_id){
-    var coldb = alasql('SELECT db_name FROM colname WHERE id=?',[c_id])[0];
-    return coldb.db_name;
+    return alasql('COLUMN OF SELECT db_name FROM colname WHERE id=?',[c_id])[0];
 }
 
 function findColId(name){
-    var colId = alasql('SELECT id FROM colname WHERE web=?',[name])[0];
-    console.log(colId);
-    return colId.id;
+    return  alasql('COLUMN OF SELECT id FROM colname WHERE web=?',[name])[0];
 }
 
 function getColList(name){
-    var colList = [];
-    var selected_col = alasql('SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
-    for(var i = 0; i<selected_col.length; i++){
-        colList.push(selected_col[i].c_id);
-    }
-    return colList;
+    return alasql('COLUMN OF SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
 }
+
 
 function getAddress(e_id){
     var addr = alasql('SELECT * FROM addr WHERE emp=?',[e_id])[0];
-    //zip STRING, state STRING, city STRING, street STRING, bldg STRING, house INT
     return addr.street+addr.bldg+', '+addr.house+', '+addr.city+', '+addr.state+', '+addr.zip;
 }
 
@@ -81,23 +68,17 @@ function getFamily(e_id){
     var result = "";
     for(var i = 0; i<fams.length; i++){
         var fam = fams[i];
-        if(fam){
-            //name STRING, sex INT, birthday STRING, relation STRING, cohabit INT, care INT
-            result+= fam.relation +': '+fam.name+', B-day: '+fam.birthday+', Cohabitation:'+DB.choice(fam.cohabit)+', Dependent: '+DB.choice(fam.care)+'<br>';
-        }
-        break;
+        result+= fam.relation +': '+fam.name+'<br>';
     }
     return result;
 }
 
 function getEdu(e_id){
     var edu = alasql('SELECT * FROM edu WHERE emp=?', [e_id])[0];
-    //school STRING, major STRING, grad STRING
     if(edu){
         return 'School: '+edu.school+', Major: '+edu.major+', Graduation: '+edu.grad;
-    }else{
-        return '';
     }
+    return '';
 }
 
 function updateColLayout(l_id,cols) {
@@ -143,8 +124,8 @@ var tool4view = {
     },
     highlightActive : function (name) {
         layout_menu.each(function () {
-            var opt = $(this).text();
-            if(opt==name){
+            var opt= $(this).text();
+            if(opt===name){
                 $(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
                 $(this).addClass('list-group-item-info');
             }
@@ -256,15 +237,9 @@ function updateMetricDef(ob){
 }
 
 //===============functions for column layout=====================
-
-
-//init table content
+//init view
 tool4view.init();
 
-
-$('tr').click(function () {
-    window.location.href = 'emp.html?id=' + $(this).attr('id');
-});
 //update table
 layout_menu.click(function () {
     tool4view.resetTable( $(this).text());
@@ -276,10 +251,27 @@ layout_name.change(function () {
 });
 
 //Create
+function existLName(name){
+    var laynames = my_db.layouts;
+    for(var i = 0; i<laynames.length; i++){
+        if(laynames[i].name === name){
+            //the name exists
+            return true;
+        }
+    }
+    return false;
+}
+
 $('#btn-create-lay').click(function () {
     var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
     var name = layout_input.val();
-    if(name!=='') {
+    if(name==='') {
+        lay_name_input.attr('class','has-error');
+        layout_input.after('<span class="help-block">The layout name CANNOT be empty!</span>');
+    }else if(existLName(name)){
+        lay_name_input.attr('class','has-error');
+        layout_input.after('<span class="help-block">The layout name you inputted exists!</span>');
+    }else{
         alasql('INSERT INTO layout VALUES (?,?,?)', [l_id.toString(), name, "false"]);
         tool4view.setActiveLay(name);
         tool4view.fillTable(getColList(name));
@@ -287,9 +279,6 @@ $('#btn-create-lay').click(function () {
         updateColLayout(l_id, cols);
         new_modal.modal('hide');
         location.reload(true);//refresh
-    }else{
-        $('.name-inputor').attr('class','has-error');
-        layout_input.after('<span class="help-block">Please fill in the name of the layout</span>');
     }
 });
 
@@ -337,6 +326,3 @@ $(window).scroll(function () {
         clonet.hide();
     }
 });
-
-
-// ===========functions for custom column=============

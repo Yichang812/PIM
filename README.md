@@ -1,16 +1,18 @@
-# PersonalLnfoMngmt
+# InfoManager
 
-### About PersonalInfoMngmt
+### About InfoManager
 
-The name is short for Personal Information Management. The functions that allow user to costomise columns in Employee List page are going to be added in the existing system.
+Personal Information Management is the most basic function in COMPANY. This project requires me to improve this function based on user's request, which is allowing user to costomize columns in Employee List page.
 
-I designed 3 main features:
+To fulfill the request, I designed 3 features:
 
 1. Editable column layout
 2. Custom columns
 3. Download table
 
-The features are divided into the following tasks:
+The features I designed can benefit users in many situations which is indicated in the file called *Catalog*.
+
+To achieve the goal, there are many tasks I need to complete:
 
 - [x] Download table as Excel file (by [ExcelExportJs](https://github.com/tarunbatta/ExcelExportJs))
 - [x] Sticky table header

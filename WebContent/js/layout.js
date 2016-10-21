@@ -28,7 +28,6 @@ var theader = $('#tbl-download thead tr');
 var layout_input = $('#new-layout-name');
 var clonet = $('#tbl-clone');
 var cloneh = $('#tbl-clone thead tr');
-var layout_menu = $('.opt-layout');
 var d_alert = $('#overlay,#dialog');
 var format = $('#format').find('li');
 var operation = $('#operation').find('input');
@@ -60,7 +59,8 @@ function getColList(name){
 
 function getAddress(e_id){
     var addr = alasql('SELECT * FROM addr WHERE emp=?',[e_id])[0];
-    return addr.street+addr.bldg+', '+addr.house+', '+addr.city+', '+addr.state+', '+addr.zip;
+    console.log(e_id,addr);
+    return addr.street+', '+addr.bldg+', '+addr.house+', '+addr.city+', '+addr.state+', '+addr.zip;
 }
 
 function getFamily(e_id){
@@ -88,74 +88,86 @@ function updateColLayout(l_id,cols) {
         n++;
     }
 }
+function highlightActive(name) {
 
-var tool4view = {
-    fillTable : function (cols) {
-        for(var i = 0; i<cols.length; i++){
-            theader.append('<th>'+findColName(cols[i])+'</th>');
-            cloneh.append('<th>'+findColName(cols[i])+'</th>');
+    $('.opt-layout').each(function () {
+        var opt= $(this).text();
+        if(opt===name){
+            $(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
+            $(this).addClass('list-group-item-info');
         }
-        for (var i = 0; i < emps.length; i++) {
-            var emp = emps[i];
-            var row = $('<tr id="'+emp.id+'"></tr>');
-            for (var n = 0; n < cols.length; n++) {
-                switch (cols[n]) {
-                    case 1:
-                        row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-                        break;
-                    case 4:
-                        row.append('<td>' + DB.choice(emp.sex) + '</td>');
-                        break;
-                    case 19:
-                        row.append('<td>' + getAddress(emp.id) + '</td>');
-                        break;
-                    case 20:
-                        row.append('<td>' + getFamily(emp.id) + '</td>');
-                        break;
-                    case 21:
-                        row.append('<td>' + getEdu(emp.id) + '</td>');
-                        break;
-                    default:
-                        row.append('<td>' + emp[findColDB(cols[n])] + '</td>');
-                }//switch
-            }//for each record
-            row.appendTo('#tbody-emps');
-        }
-    },
-    highlightActive : function (name) {
-        layout_menu.each(function () {
-            var opt= $(this).text();
-            if(opt===name){
-                $(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
-                $(this).addClass('list-group-item-info');
-            }
-        });
-    },
-    getFirstLay : function () {
-        var first_lay = alasql('SELECT * FROM layout',[])[0];
-        return first_lay.name;
-    },
-    getActiveLay : function () {
-        var active_lay = alasql('SELECT * FROM layout WHERE active=?',["true"])[0];
-        return active_lay.name;
-    },
-    setActiveLay : function (name) {
-        alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
-        alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
-        this.highlightActive(name);
-    },
-    resetTable : function (layout) {
-        theader.children('th').remove();
-        trecords.children('tr').remove();
-        cloneh.children('th').remove();
-        this.setActiveLay(layout);
-        this.fillTable(getColList(layout));
-    },
-    init : function () {
-        this.fillTable(getColList(this.getActiveLay()));
-        this.highlightActive(this.getActiveLay());
+    });
+}
+
+function fillTable(cols){
+    for(var i = 0; i<cols.length; i++){
+        theader.append('<th>'+findColName(cols[i])+'</th>');
+        cloneh.append('<th>'+findColName(cols[i])+'</th>');
     }
-};
+    for (var i = 0; i < emps.length; i++) {
+        var emp = emps[i];
+        var row = $('<tr id="'+emp.id+'"></tr>');
+        for (var n = 0; n < cols.length; n++) {
+            switch (cols[n]) {
+                case 1:
+                    row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
+                    break;
+                case 4:
+                    row.append('<td>' + DB.choice(emp.sex) + '</td>');
+                    break;
+                case 19:
+                    row.append('<td>' + getAddress(emp.id) + '</td>');
+                    break;
+                case 20:
+                    row.append('<td>' + getFamily(emp.id) + '</td>');
+                    break;
+                case 21:
+                    row.append('<td>' + getEdu(emp.id) + '</td>');
+                    break;
+                default:
+                    row.append('<td>' + emp[findColDB(cols[n])] + '</td>');
+            }//switch
+        }//for each record
+        row.appendTo('#tbody-emps');
+    }
+}
+function initMenu(){
+    for (var i = 0; i<my_db.layouts.length; i++) {
+        var layout = my_db.layouts[i];
+        var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
+        $('#layout-list').parent().append(li);
+    }
+    return true;
+}
+
+function getFirstLay() {
+    var first_lay = alasql('SELECT * FROM layout',[])[0];
+    return first_lay.name;
+}
+function    getActiveLay() {
+    var active_lay = alasql('SELECT * FROM layout WHERE active=?', ["true"])[0];
+    return active_lay.name;
+}
+function setActiveLay(name) {
+    alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
+    alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
+    highlightActive(name);
+}
+function resetTable(layout) {
+    theader.children('th').remove();
+    trecords.children('tr').remove();
+    cloneh.children('th').remove();
+    setActiveLay(layout);
+    fillTable(getColList(getActiveLay()));
+    location.reload(true);//refresh
+}
+function init() {
+    fillTable(getColList(getActiveLay()));
+    initMenu();
+    highlightActive(getActiveLay());
+
+}
+
 
 //=====================functions for setup modal contents============================
 //layout modal
@@ -173,7 +185,7 @@ for (var i = 0; i<my_db.colNames.length; i++){
     col_name_edit.append(c_op.clone());
 }
 
-var colList = getColList(tool4view.getActiveLay());
+var colList = getColList(getActiveLay());
 for(var i = 0; i<colList.length; i++){
     var op = $('<li><a href="#">'+findColName(colList[i])+'</a></li>');
     $('#col1,#col2').append(op);
@@ -238,11 +250,11 @@ function updateMetricDef(ob){
 
 //===============functions for column layout=====================
 //init view
-tool4view.init();
+init();
 
 //update table
-layout_menu.click(function () {
-    tool4view.resetTable( $(this).text());
+$('.opt-layout').click(function () {
+    resetTable( $(this).text());
 });
 
 //Read
@@ -267,14 +279,14 @@ $('#btn-create-lay').click(function () {
     var name = layout_input.val();
     if(name==='') {
         lay_name_input.attr('class','has-error');
-        layout_input.after('<span class="help-block">The layout name CANNOT be empty!</span>');
+        $('#lay-help').text('The layout name CANNOT be empty!');
     }else if(existLName(name)){
         lay_name_input.attr('class','has-error');
-        layout_input.after('<span class="help-block">The layout name you inputted exists!</span>');
+        $('#lay-help').text('The layout name you inputted exists!');
     }else{
         alasql('INSERT INTO layout VALUES (?,?,?)', [l_id.toString(), name, "false"]);
-        tool4view.setActiveLay(name);
-        tool4view.fillTable(getColList(name));
+        setActiveLay(name);
+        fillTable(getColList(name));
         var cols = $('#col-name-new').val();
         updateColLayout(l_id, cols);
         new_modal.modal('hide');
@@ -293,7 +305,7 @@ $('#btn-delete-lay').click(function(){
     $('#btn-yes').click(function () {
         alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
         alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
-        tool4view.resetTable(tool4view.getFirstLay());
+        resetTable(getFirstLay());
         d_alert.hide();
         location.reload(true);
     });
@@ -312,7 +324,7 @@ $('#btn-edit-lay').click(function () {
     alasql("DELETE FROM colLayout WHERE l_id=?",[editId]);
 
     updateColLayout(editId,cols);
-    tool4view.resetTable(editName);
+    resetTable(editName);
     edit_modal.modal('hide');
     location.reload(true);//refresh page
 });

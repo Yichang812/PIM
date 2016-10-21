@@ -34,17 +34,18 @@ function setMetric(col1, col2, op, col){
 
 var custom_col_modal = $('#custom-col');
 var custom_col_name = $('#custom-col-name');
-var col_name_input = $('#col-name-input');
+var col_name_input = $('.col-name-input');
 
 $('#btn-save-col').click(function () {
+    console.log(my_db.colTypes);
     var name = custom_col_name.val();
-    var layout = tool4view.getActiveLay();
+    var layout = getActiveLay();
     if(name===''){
         col_name_input.attr('class','has-error');
-        custom_col_name.after('<span class="help-block">The column name CANNOT be empty!</span>');
+        $('#col-help').text('The column name CANNOT be empty!');
     }else if(existCName(name)){
         col_name_input.attr('class','has-error');
-        custom_col_name.after('<span class="help-block">The column name you inputted exists!</span>');
+        $('#col-help').text('The column name you inputted exists!');
     }else if(metric_def.col1&&metric_def.col2){
         createCol(name,layout);
         setMetric(metric_def.col1,metric_def.col2,metric_def.symbol,name);

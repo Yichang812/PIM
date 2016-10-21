@@ -1,7 +1,8 @@
 // Yichang
 var my_db = {
     layouts : alasql('SELECT * FROM layout', []),
-    colNames : alasql('SELECT * FROM colname', [])
+    colNames : alasql('SELECT * FROM colname', []),
+    colTypes : alasql('SHOW columns FROM emp')
 };
 
 var d_dialog = $('#dialog');
@@ -39,13 +40,13 @@ $(document).ready(function () {
     });
 
 });
-function initOption(){
-    for (var i = 0; i<my_db.layouts.length; i++) {
-        var layout = my_db.layouts[i];
-        var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
-        $('#layout-list').parent().append(li);
-    }
-}
-initOption();
+// function initOption(){
+//     for (var i = 0; i<my_db.layouts.length; i++) {
+//         var layout = my_db.layouts[i];
+//         var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
+//         $('#layout-list').parent().append(li);
+//     }
+// }
+// initOption();
 
 d_dialog.css({top:dialog.height,left:dialog.width});

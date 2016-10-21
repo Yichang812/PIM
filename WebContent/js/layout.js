@@ -1,7 +1,3 @@
-/**
- * Created by li_yi-pc on 10/13/2016.
- */
-
 var q1 = $.url().param('q1');
 $('input[name="q1"]').val(q1);
 var q2 = $.url().param('q2');
@@ -32,48 +28,39 @@ var theader = $('#tbl-download thead tr');
 var layout_input = $('#new-layout-name');
 var clonet = $('#tbl-clone');
 var cloneh = $('#tbl-clone thead tr');
-var layout_menu = $('.opt-layout');
 var d_alert = $('#overlay,#dialog');
 var format = $('#format').find('li');
 var operation = $('#operation').find('input');
+var lay_name_input = $('.lay-name-input');
 
 
 
 //Tools
 function findIdByName(name){
-    var id = alasql('SELECT id FROM layout WHERE name=?',[name])[0];
-    return id.id;
+    return alasql('COLUMN OF SELECT id FROM layout WHERE name=?',[name])[0];
 }
 
 function findColName(c_id){
-    var name = alasql('SELECT web FROM colname WHERE id=?',[c_id])[0];
-    return name.web;
+    return alasql('COLUMN OF SELECT web FROM colname WHERE id=?',[c_id])[0];
 }
 
 function findColDB(c_id){
-    var coldb = alasql('SELECT db_name FROM colname WHERE id=?',[c_id])[0];
-    return coldb.db_name;
+    return alasql('COLUMN OF SELECT db_name FROM colname WHERE id=?',[c_id])[0];
 }
 
 function findColId(name){
-    var colId = alasql('SELECT id FROM colname WHERE web=?',[name])[0];
-    console.log(colId);
-    return colId.id;
+    return  alasql('COLUMN OF SELECT id FROM colname WHERE web=?',[name])[0];
 }
 
 function getColList(name){
-    var colList = [];
-    var selected_col = alasql('SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
-    for(var i = 0; i<selected_col.length; i++){
-        colList.push(selected_col[i].c_id);
-    }
-    return colList;
+    return alasql('COLUMN OF SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
 }
+
 
 function getAddress(e_id){
     var addr = alasql('SELECT * FROM addr WHERE emp=?',[e_id])[0];
-    //zip STRING, state STRING, city STRING, street STRING, bldg STRING, house INT
-    return addr.street+addr.bldg+', '+addr.house+', '+addr.city+', '+addr.state+', '+addr.zip;
+    console.log(e_id,addr);
+    return addr.street+', '+addr.bldg+', '+addr.house+', '+addr.city+', '+addr.state+', '+addr.zip;
 }
 
 function getFamily(e_id){
@@ -81,23 +68,17 @@ function getFamily(e_id){
     var result = "";
     for(var i = 0; i<fams.length; i++){
         var fam = fams[i];
-        if(fam){
-            //name STRING, sex INT, birthday STRING, relation STRING, cohabit INT, care INT
-            result+= fam.relation +': '+fam.name+', B-day: '+fam.birthday+', Cohabitation:'+DB.choice(fam.cohabit)+', Dependent: '+DB.choice(fam.care)+'<br>';
-        }
-        break;
+        result+= fam.relation +': '+fam.name+'<br>';
     }
     return result;
 }
 
 function getEdu(e_id){
     var edu = alasql('SELECT * FROM edu WHERE emp=?', [e_id])[0];
-    //school STRING, major STRING, grad STRING
     if(edu){
         return 'School: '+edu.school+', Major: '+edu.major+', Graduation: '+edu.grad;
-    }else{
-        return '';
     }
+    return '';
 }
 
 function updateColLayout(l_id,cols) {
@@ -107,77 +88,86 @@ function updateColLayout(l_id,cols) {
         n++;
     }
 }
+function highlightActive(name) {
 
-var tool4view = {
-    fillTable : function (cols) {
-        for(var i = 0; i<cols.length; i++){
-            theader.append('<th>'+findColName(cols[i])+'</th>');
-            cloneh.append('<th>'+findColName(cols[i])+'</th>');
+    $('.opt-layout').each(function () {
+        var opt= $(this).text();
+        if(opt===name){
+            $(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
+            $(this).addClass('list-group-item-info');
         }
-        for (var i = 0; i < emps.length; i++) {
-            var emp = emps[i];
-            var row = $('<tr></tr>');
-            for (var n = 0; n < cols.length; n++) {
-                switch (cols[n]) {
-                    case 1:
-                        row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-                        break;
-                    case 2:
-                        row.append('<td><a href="emp.html?id=' + emp.id + '">' + emp.number + '</a></td>');
-                        break;
-                    case 4:
-                        row.append('<td>' + DB.choice(emp.sex) + '</td>');
-                        break;
-                    case 19:
-                        row.append('<td>' + getAddress(emp.id) + '</td>');
-                        break;
-                    case 20:
-                        row.append('<td>' + getFamily(emp.id) + '</td>');
-                        break;
-                    case 21:
-                        row.append('<td>' + getEdu(emp.id) + '</td>');
-                        break;
-                    default:
-                        row.append('<td>' + emp[findColDB(cols[n])] + '</td>');
-                }//switch
-            }//for each record
-            row.appendTo('#tbody-emps');
-        }
-    },
-    highlightActive : function (name) {
-        layout_menu.each(function () {
-            var opt = $(this).text();
-            if(opt==name){
-                $(this).parent().find('.list-group-item-info').removeClass('list-group-item-info');
-                $(this).addClass('list-group-item-info');
-            }
-        });
-    },
-    getFirstLay : function () {
-        var first_lay = alasql('SELECT * FROM layout',[])[0];
-        return first_lay.name;
-    },
-    getActiveLay : function () {
-        var active_lay = alasql('SELECT * FROM layout WHERE active=?',["true"])[0];
-        return active_lay.name;
-    },
-    setActiveLay : function (name) {
-        alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
-        alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
-        this.highlightActive(name);
-    },
-    resetTable : function (layout) {
-        theader.children('th').remove();
-        trecords.children('tr').remove();
-        cloneh.children('th').remove();
-        this.setActiveLay(layout);
-        this.fillTable(getColList(layout));
-    },
-    init : function () {
-        this.fillTable(getColList(this.getActiveLay()));
-        this.highlightActive(this.getActiveLay());
+    });
+}
+
+function fillTable(cols){
+    for(var i = 0; i<cols.length; i++){
+        theader.append('<th>'+findColName(cols[i])+'</th>');
+        cloneh.append('<th>'+findColName(cols[i])+'</th>');
     }
-};
+    for (var i = 0; i < emps.length; i++) {
+        var emp = emps[i];
+        var row = $('<tr id="'+emp.id+'"></tr>');
+        for (var n = 0; n < cols.length; n++) {
+            switch (cols[n]) {
+                case 1:
+                    row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
+                    break;
+                case 4:
+                    row.append('<td>' + DB.choice(emp.sex) + '</td>');
+                    break;
+                case 19:
+                    row.append('<td>' + getAddress(emp.id) + '</td>');
+                    break;
+                case 20:
+                    row.append('<td>' + getFamily(emp.id) + '</td>');
+                    break;
+                case 21:
+                    row.append('<td>' + getEdu(emp.id) + '</td>');
+                    break;
+                default:
+                    row.append('<td>' + emp[findColDB(cols[n])] + '</td>');
+            }//switch
+        }//for each record
+        row.appendTo('#tbody-emps');
+    }
+}
+function initMenu(){
+    for (var i = 0; i<my_db.layouts.length; i++) {
+        var layout = my_db.layouts[i];
+        var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
+        $('#layout-list').parent().append(li);
+    }
+    return true;
+}
+
+function getFirstLay() {
+    var first_lay = alasql('SELECT * FROM layout',[])[0];
+    return first_lay.name;
+}
+function    getActiveLay() {
+    var active_lay = alasql('SELECT * FROM layout WHERE active=?', ["true"])[0];
+    return active_lay.name;
+}
+function setActiveLay(name) {
+    alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
+    alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
+    highlightActive(name);
+}
+function resetTable(layout) {
+    theader.children('th').remove();
+    trecords.children('tr').remove();
+    cloneh.children('th').remove();
+    setActiveLay(layout);
+    fillTable(getColList(getActiveLay()));
+    location.reload(true);//refresh
+}
+function init() {
+    fillTable(getColList(getActiveLay()));
+    initMenu();
+    highlightActive(getActiveLay());
+
+}
+
 
 //=====================functions for setup modal contents============================
 //layout modal
@@ -195,7 +185,7 @@ for (var i = 0; i<my_db.colNames.length; i++){
     col_name_edit.append(c_op.clone());
 }
 
-var colList = getColList(tool4view.getActiveLay());
+var colList = getColList(getActiveLay());
 for(var i = 0; i<colList.length; i++){
     var op = $('<li><a href="#">'+findColName(colList[i])+'</a></li>');
     $('#col1,#col2').append(op);
@@ -259,14 +249,12 @@ function updateMetricDef(ob){
 }
 
 //===============functions for column layout=====================
-
-
-//init table content
-tool4view.init();
+//init view
+init();
 
 //update table
-layout_menu.click(function () {
-    tool4view.resetTable( $(this).text());
+$('.opt-layout').click(function () {
+    resetTable( $(this).text());
 });
 
 //Read
@@ -275,20 +263,34 @@ layout_name.change(function () {
 });
 
 //Create
+function existLName(name){
+    var laynames = my_db.layouts;
+    for(var i = 0; i<laynames.length; i++){
+        if(laynames[i].name === name){
+            //the name exists
+            return true;
+        }
+    }
+    return false;
+}
+
 $('#btn-create-lay').click(function () {
     var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
     var name = layout_input.val();
-    if(name!=='') {
+    if(name==='') {
+        lay_name_input.attr('class','has-error');
+        $('#lay-help').text('The layout name CANNOT be empty!');
+    }else if(existLName(name)){
+        lay_name_input.attr('class','has-error');
+        $('#lay-help').text('The layout name you inputted exists!');
+    }else{
         alasql('INSERT INTO layout VALUES (?,?,?)', [l_id.toString(), name, "false"]);
-        tool4view.setActiveLay(name);
-        tool4view.fillTable(getColList(name));
+        setActiveLay(name);
+        fillTable(getColList(name));
         var cols = $('#col-name-new').val();
         updateColLayout(l_id, cols);
         new_modal.modal('hide');
         location.reload(true);//refresh
-    }else{
-        $('.name-inputor').attr('class','has-error');
-        layout_input.after('<span class="help-block">Please fill in the name of the layout</span>');
     }
 });
 
@@ -298,17 +300,17 @@ $('#btn-delete-lay').click(function(){
     $('#delete-lay').text(deleteLay);
 
     edit_modal.modal('hide');
-    d_alert.toggle();
+    d_alert.show();
 
     $('#btn-yes').click(function () {
         alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
         alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
-        tool4view.resetTable(tool4view.getFirstLay());
-        d_alert.toggle();
+        resetTable(getFirstLay());
+        d_alert.hide();
         location.reload(true);
     });
     $('#btn-no').click(function(){
-        d_alert.toggle();
+        d_alert.hide();
     });
 
 });
@@ -322,7 +324,7 @@ $('#btn-edit-lay').click(function () {
     alasql("DELETE FROM colLayout WHERE l_id=?",[editId]);
 
     updateColLayout(editId,cols);
-    tool4view.resetTable(editName);
+    resetTable(editName);
     edit_modal.modal('hide');
     location.reload(true);//refresh page
 });
@@ -336,6 +338,3 @@ $(window).scroll(function () {
         clonet.hide();
     }
 });
-
-
-// ===========functions for custom column=============

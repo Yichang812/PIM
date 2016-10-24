@@ -34,10 +34,7 @@ $(document).ready(function () {
         content:'Choose the kind of formatting you\' like for the column contents'
     });
 
-    //show employee's individual page when click on the row
-    $('tr').click(function () {
-        window.location.href = 'emp.html?id=' + $(this).attr('id');
-    });
+
 
 });
 // function initOption(){

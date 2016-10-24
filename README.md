@@ -26,7 +26,7 @@ To achieve the goal, there are many tasks I need to complete:
 - [x] Maybe I need to change the data in database for demonstration
 - [x] Check if the layout name exists
 - [x] Check if the column name exists
-- [ ] Only show columns with data types like INT and FLOAT
-- [ ] Allow user to define the format of the result
+- [x] Only show columns with data types like INT and FLOAT
+- [x] Allow user to define the format of the result
 - [ ] *Support other download format*
 - [ ] Testing! Testing! Testing!

@@ -70,7 +70,6 @@ function getColList(name){
 
 function getAddress(e_id){
     var addr = alasql('SELECT * FROM addr WHERE emp=?',[e_id])[0];
-    console.log(e_id,addr);
     return addr.street+', '+addr.bldg+', '+addr.house+', '+addr.city+', '+addr.state+', '+addr.zip;
 }
 
@@ -319,7 +318,7 @@ function resetTable(layout) {
         var metric = metrics[i];
         fillCol(metric.c1,metric.c2, metric.op, metric.col, metric.format);
     }
-    location.reload(true);//refresh
+    // location.reload(true);//refresh
 }
 function init() {
     fillTable(getColList(getActiveLay()));
@@ -373,11 +372,12 @@ for(var i = 0; i<colList.length; i++){
     $('#col1,#col2').append(op);
 }
 
-//===============functions for column layout=====================
-//init view
-init();
+
+
 
 $(document).ready(function () {
+    //init view
+    init();
 
     var custom_col_modal = $('#custom-col');
     var custom_col_name = $('#custom-col-name');
@@ -502,5 +502,10 @@ $(document).ready(function () {
         }else{
             clonet.hide();
         }
+    });
+
+    //show employee's individual page when click on the row
+    $(document).on('click','tbody tr',function () {
+        window.location.href = 'emp.html?id=' + $(this).attr('id');
     });
 });

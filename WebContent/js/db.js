@@ -89,11 +89,21 @@ DB.load = function() {
 			}
 		}
 	);
+	//id,c1,c2,op,col,format,l_id
+	alasql('DROP TABLE IF EXISTS metric');
+	alasql('CREATE TABLE metric(id INT IDENTITY, c1 STRING, c2 STRING, op STRING, col STRING, format STRING, l_name STRING);');
+	var pmetric = alasql.promise('SELECT MATRIX * FROM CSV("data/METRIC-METRIC.csv",{headers:true})').then(
+		function(metrics){
+			for(var i = 0; i< metrics.length; i++){
+				alasql('INSERT INTO metric VALUES(?,?,?,?,?,?,?);',metrics[i]);
+			}
+		}
+	);
 
 
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, pcolname, playout, pcolLayout]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, pcolname, playout, pcolLayout,pmetric]).then(function() {
 		window.location.reload(true);
 	});
 };

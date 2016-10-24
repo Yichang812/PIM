@@ -40,6 +40,13 @@ function findIdByName(name){
     return alasql('COLUMN OF SELECT id FROM layout WHERE name=?',[name])[0];
 }
 
+function findDBByName(name){
+    return alasql('COLUMN OF SELECT db_name FROM colname WHERE web=?',[name])[0];
+}
+
+function findNameByDB(db){
+    return alasql('COLUMN OF SELECT web FROM colname WHERE db_name=?',[db])[0];
+}
 function findColName(c_id){
     return alasql('COLUMN OF SELECT web FROM colname WHERE id=?',[c_id])[0];
 }
@@ -49,9 +56,13 @@ function findColDB(c_id){
 }
 
 function findColId(name){
+
     return  alasql('COLUMN OF SELECT id FROM colname WHERE web=?',[name])[0];
 }
 
+function findCusCol(l_name){
+    return alasql('SELECT c1,c2,op,col,format FROM metric WHERE l_name=?',[l_name]);
+}
 function getColList(name){
     return alasql('COLUMN OF SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
 }
@@ -79,6 +90,148 @@ function getEdu(e_id){
         return 'School: '+edu.school+', Major: '+edu.major+', Graduation: '+edu.grad;
     }
     return '';
+}
+
+function getNumColList(){
+    var cols = alasql('SHOW COLUMNS FROM emp');
+    var list = [];
+    for(var i = 0; i< cols.length; i++){
+        if(cols[i].dbtypeid=='INT'||cols[i].dbtypeid=='FLOAT'){
+            if(cols[i].columnid!='id'&&cols[i].columnid!='sex'){
+                list.push(cols[i].columnid);
+            }
+        }
+    }
+    return list;
+}
+
+function setCusCol(c1,c2,op,col,format,layout){
+    var id = alasql('SELECT MAX(id) + 1 as id FROM metric')[0].id;
+    alasql('INSERT INTO metric VALUES(?,?,?,?,?,?,?)',[id.id,c1,c2,op,col,format,layout])
+}
+function existCName(name){
+    var colnames = my_db.colNames;
+    for(var i = 0; i<colnames.length; i++){
+        if(colnames[i].web === name){
+            //the name exists
+            return true;
+        }
+    }
+    return false;
+}
+function existLName(name){
+    var laynames = my_db.layouts;
+    for(var i = 0; i<laynames.length; i++){
+        if(laynames[i].name === name){
+            //the name exists
+            return true;
+        }
+    }
+    return false;
+}
+
+function getColVals(col){
+    col = findDBByName(col);
+    var result = alasql('COLUMN OF SELECT '+col+' FROM emp');
+    if(isNaN(parseFloat(result))){
+        return false;
+    }
+    return result;
+}
+
+function reformat(result,format){
+    switch (format.toString()){
+        case '1':
+            return result;
+        case '2':
+            for(var i = 0; i<result.length; i++){
+                result[i] = (result[i]*100).toFixed(2)+'%';
+            }
+            return result;
+        case '3':
+            for(var i = 0; i<result.length; i++){
+                result[i] = '$'+result[i];
+            }
+            return result;
+        default:
+            console.log('Wrong format code'+format);
+    }
+}
+
+function getSum(col1,col2){
+    var result = [];
+    for(var i=0;i<col1.length;i++){
+        result.push(col1[i]+col2[i]);
+    }
+    console.log(result);
+    return result;
+}
+function getDiff(col1,col2){
+    var result = [];
+    for(var i=0;i<col1.length;i++){
+        result.push(col1[i]-col2[i]);
+    }
+    return result;
+}
+function getProduct(col1,col2){
+    var result = [];
+    for(var i=0;i<col1.length;i++){
+        result.push(col1[i]*col2[i]);
+    }
+    return result;
+}
+function getQuotient(col1,col2){
+    var result = [];
+    for(var i=0;i<col1.length;i++){
+        result.push(col1[i]/col2[i]);
+    }
+    return result;
+}
+function getResult(col1, col2, op, format){
+    var result = [];
+    switch(op.toString()){
+        case '0':
+            result = reformat(getSum(col1,col2),format);
+            break;
+        case '1':
+            result = reformat(getDiff(col1,col2),format);
+            break;
+        case '2':
+            result = reformat(getProduct(col1,col2),format);
+            break;
+        case '3':
+            result = reformat(getQuotient(col1,col2),format);
+            break;
+        default:
+            console.log('Wrong op code:'+op);
+    }
+    return result;
+}
+
+function fillCol(col1,col2, op, col, format){
+    var td;
+    theader.append('<th>'+col+'</th>');
+    cloneh.append('<th>'+col+'</th>');
+    var c1 = getColVals(col1);
+    var c2 = getColVals(col2);
+    var result = getResult(c1, c2, op, format);
+    $('tbody tr').each(function(index){
+        td = $('<td>'+result[index]+'</td>');
+        $(this).append(td);
+    });
+}
+
+function updateMetricDef(ob){
+    var symbols = ['&#43','&#45','&#215','&#247'];
+    var oper = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+symbols[parseInt(ob.symbol)]+'</button>');
+    if(ob.col1){
+        var c1 = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+ob.col1+'</button>');
+    }
+    if(ob.col2){
+        var c2 = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+ob.col2+'</button>');
+    }
+
+    $('#def-panel').empty().append(c1).append(oper).append(c2);
 }
 
 function updateColLayout(l_id,cols) {
@@ -130,6 +283,8 @@ function fillTable(cols){
         }//for each record
         row.appendTo('#tbody-emps');
     }
+
+    //Custom col
 }
 function initMenu(){
     for (var i = 0; i<my_db.layouts.length; i++) {
@@ -159,11 +314,21 @@ function resetTable(layout) {
     cloneh.children('th').remove();
     setActiveLay(layout);
     fillTable(getColList(getActiveLay()));
+    var metrics = findCusCol(layout);
+    for(var i = 0; i<metrics.length; i++){
+        var metric = metrics[i];
+        fillCol(metric.c1,metric.c2, metric.op, metric.col, metric.format);
+    }
     location.reload(true);//refresh
 }
 function init() {
     fillTable(getColList(getActiveLay()));
     initMenu();
+    var metrics = findCusCol(getActiveLay());
+    for(var i = 0; i<metrics.length; i++){
+        var metric = metrics[i];
+        fillCol(metric.c1,metric.c2, metric.op, metric.col, metric.format);
+    }
     highlightActive(getActiveLay());
 
 }
@@ -185,12 +350,6 @@ for (var i = 0; i<my_db.colNames.length; i++){
     col_name_edit.append(c_op.clone());
 }
 
-var colList = getColList(getActiveLay());
-for(var i = 0; i<colList.length; i++){
-    var op = $('<li><a href="#">'+findColName(colList[i])+'</a></li>');
-    $('#col1,#col2').append(op);
-}
-
 $('#btn-edit').click(function () {
     new_modal.modal('hide');
     edit_modal.modal('show');
@@ -208,133 +367,140 @@ $(function() {
 });
 
 //custom column modal
-
-
-var metric_def = {
-    symbol : 0,
-    format : 1
-};
-
-format.click(function(){
-    $('#format-text').text($(this).text());
-    metric_def.format = $(this).attr('value')
-});
-
-operation.change(function () {
-    metric_def.symbol = $(this).val();
-    updateMetricDef(metric_def);
-});
-
-$('#col1').find('li').click(function () {
-    metric_def['col1'] = $(this).text();
-    updateMetricDef(metric_def);
-});
-
-$('#col2').find('li').click(function () {
-    metric_def['col2'] = $(this).text();
-    updateMetricDef(metric_def);
-});
-
-function updateMetricDef(ob){
-    var symbols = ['&#43','&#45','&#215','&#247'];
-    var oper = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+symbols[ob.symbol]+'</button>');
-    if(ob.col1){
-        var c1 = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+ob.col1+'</button>');
-    }
-    if(ob.col2){
-        var c2 = $('<button class="btn btn-default disabled" style="margin-right: 10px">'+ob.col2+'</button>');
-    }
-
-    $('#def-panel').empty().append(c1).append(oper).append(c2);
+var colList = getNumColList();
+for(var i = 0; i<colList.length; i++){
+    var op = $('<li><a href="#">'+findNameByDB(colList[i])+'</a></li>');
+    $('#col1,#col2').append(op);
 }
 
 //===============functions for column layout=====================
 //init view
 init();
 
+$(document).ready(function () {
+
+    var custom_col_modal = $('#custom-col');
+    var custom_col_name = $('#custom-col-name');
+    var col_name_input = $('.col-name-input');
+
+
+    var metric_def = {
+        symbol : '0',
+        format : '1'
+    };
+
+
+    $('#col1').find('li').click(function () {
+        metric_def['col1'] = $(this).text();
+        updateMetricDef(metric_def);
+    });
+
+    $('#col2').find('li').click(function () {
+        metric_def['col2'] = $(this).text();
+        updateMetricDef(metric_def);
+    });
+
+
+    format.click(function(){
+        $('#format-text').text($(this).text());
+        metric_def.format = $(this).attr('value')
+    });
+
+    operation.change(function () {
+        metric_def.symbol = $(this).val();
+        updateMetricDef(metric_def);
+    });
+//create custom col
+    $('#btn-save-col').click(function () {
+        var name = custom_col_name.val();
+        var layout = getActiveLay();
+        if(name===''){
+            col_name_input.attr('class','has-error');
+            $('#col-help').text('The column name CANNOT be empty!');
+        }else if(existCName(name)){
+            col_name_input.attr('class','has-error');
+            $('#col-help').text('The column name you inputted exists!');
+        }else if(metric_def.col1||metric_def.col2){
+            fillCol(metric_def.col1,metric_def.col2,metric_def.symbol,name,metric_def.format);
+            custom_col_modal.modal('hide');
+        }
+        //add col to layout
+        setCusCol(metric_def.col1,metric_def.col2,metric_def.symbol,name,metric_def.format,layout);
+    });
+
 //update table
-$('.opt-layout').click(function () {
-    resetTable( $(this).text());
-});
+    $('.opt-layout').click(function () {
+        resetTable( $(this).text());
+    });
 
 //Read
-layout_name.change(function () {
-    col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
-});
+    layout_name.change(function () {
+        col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
+    });
 
 //Create
-function existLName(name){
-    var laynames = my_db.layouts;
-    for(var i = 0; i<laynames.length; i++){
-        if(laynames[i].name === name){
-            //the name exists
-            return true;
+    $('#btn-create-lay').click(function () {
+        var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
+        var name = layout_input.val();
+        if(name==='') {
+            lay_name_input.attr('class','has-error');
+            $('#lay-help').text('The layout name CANNOT be empty!');
+        }else if(existLName(name)){
+            lay_name_input.attr('class','has-error');
+            $('#lay-help').text('The layout name you inputted exists!');
+        }else{
+            alasql('INSERT INTO layout VALUES (?,?,?)', [l_id.toString(), name, "false"]);
+            setActiveLay(name);
+            fillTable(getColList(name));
+            var cols = $('#col-name-new').val();
+            updateColLayout(l_id, cols);
+            new_modal.modal('hide');
+            location.reload(true);//refresh
         }
-    }
-    return false;
-}
-
-$('#btn-create-lay').click(function () {
-    var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
-    var name = layout_input.val();
-    if(name==='') {
-        lay_name_input.attr('class','has-error');
-        $('#lay-help').text('The layout name CANNOT be empty!');
-    }else if(existLName(name)){
-        lay_name_input.attr('class','has-error');
-        $('#lay-help').text('The layout name you inputted exists!');
-    }else{
-        alasql('INSERT INTO layout VALUES (?,?,?)', [l_id.toString(), name, "false"]);
-        setActiveLay(name);
-        fillTable(getColList(name));
-        var cols = $('#col-name-new').val();
-        updateColLayout(l_id, cols);
-        new_modal.modal('hide');
-        location.reload(true);//refresh
-    }
-});
+    });
 
 //Delete
-$('#btn-delete-lay').click(function(){
-    var deleteLay = layout_name.val();
-    $('#delete-lay').text(deleteLay);
+    $('#btn-delete-lay').click(function(){
+        var deleteLay = layout_name.val();
+        $('#delete-lay').text(deleteLay);
 
-    edit_modal.modal('hide');
-    d_alert.show();
+        edit_modal.modal('hide');
+        d_alert.show();
 
-    $('#btn-yes').click(function () {
-        alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
-        alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
-        resetTable(getFirstLay());
-        d_alert.hide();
-        location.reload(true);
+        $('#btn-yes').click(function () {
+            alasql("DELETE FROM colLayout WHERE l_id=?",[findIdByName(deleteLay)]);
+            alasql("DELETE FROM layout WHERE name=?",[deleteLay]);
+            resetTable(getFirstLay());
+            d_alert.hide();
+            location.reload(true);
+        });
+        $('#btn-no').click(function(){
+            d_alert.hide();
+        });
+
     });
-    $('#btn-no').click(function(){
-        d_alert.hide();
-    });
-
-});
 
 //edit layout
-$('#btn-edit-lay').click(function () {
-    var editName = layout_name.val();
-    var cols = $('#col-name-edit').val();
-    var editId = findIdByName(editName);
+    $('#btn-edit-lay').click(function () {
+        var editName = layout_name.val();
+        var cols = $('#col-name-edit').val();
+        var editId = findIdByName(editName);
 
-    alasql("DELETE FROM colLayout WHERE l_id=?",[editId]);
+        alasql("DELETE FROM colLayout WHERE l_id=?",[editId]);
 
-    updateColLayout(editId,cols);
-    resetTable(editName);
-    edit_modal.modal('hide');
-    location.reload(true);//refresh page
-});
+        updateColLayout(editId,cols);
+        resetTable(editName);
+        edit_modal.modal('hide');
+        location.reload(true);//refresh page
+    });
 
 //sticky header
-$(window).scroll(function () {
-    if(window.scrollY>=200){
-        clonet.show();
-        clonet.width(theader.width());
-    }else{
-        clonet.hide();
-    }
+    $(window).scroll(function () {
+        if(window.scrollY>=200){
+            clonet.show();
+            clonet.width(theader.width());
+        }else{
+            clonet.hide();
+        }
+    });
 });

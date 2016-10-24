@@ -162,7 +162,6 @@ function getSum(col1,col2){
     for(var i=0;i<col1.length;i++){
         result.push(col1[i]+col2[i]);
     }
-    console.log(result);
     return result;
 }
 function getDiff(col1,col2){

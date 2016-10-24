@@ -11,18 +11,19 @@ var dialog = {
     width : (window.innerWidth / 2 - d_dialog.width() / 2)
 };
 
-
-
 //download table as Excel
 $(document).ready(function () {
     var downloadBtn = $('#btn-download');
+
     downloadBtn.click(function () {
-        $('#tbl-download').excelexportjs({
-            containerid: "tblDownload"
-            , datatype: 'table'
+        $('#tbl-download').table2excel({
+            sheetName: getActiveLay(),
+            filename: getActiveLay(),
+            fileext: ".xls",
+            exclude_img: true,
+            exclude_links: true
         });
     });
-
     $('#edit-dropdown').tooltip();
 
     downloadBtn.tooltip();
@@ -37,13 +38,5 @@ $(document).ready(function () {
 
 
 });
-// function initOption(){
-//     for (var i = 0; i<my_db.layouts.length; i++) {
-//         var layout = my_db.layouts[i];
-//         var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
-//         $('#layout-list').parent().append(li);
-//     }
-// }
-// initOption();
 
 d_dialog.css({top:dialog.height,left:dialog.width});

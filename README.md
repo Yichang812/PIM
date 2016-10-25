@@ -87,7 +87,7 @@ If you have certain metric that you'd like to see reported on Employee List page
 
 ### III Download Employee List
 When you want to share the information in current Employee List page, you can download the content as Excel file.
-1. Click on the ![download-icon](img\download.png) that is at the top left corner of Employee List.  
+1. Click on the ![download-icon](img/download.png) that is at the top left corner of Employee List.  
 2. An Excel file (as shown in Figure 9) named by current layout will be downloaded into you local. The link and image will NOT be included.
 
   ![Excel-file](img/excel.png)

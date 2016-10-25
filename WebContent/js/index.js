@@ -32,7 +32,7 @@ $(document).ready(function () {
         trigger:'hover',
         placement:'right',
         container: 'body',
-        content:'Choose the kind of formatting you\' like for the column contents'
+        content:'Choose the kind of formatting you\'d like for the column contents'
     });
 
 

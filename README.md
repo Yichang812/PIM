@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # InfoManager
 ### Overview
 COMPANY *InfoManager* is a system that helps users to find, keep, organize and
@@ -16,6 +17,8 @@ A column layout is a saved set of columns that will display on the Employee List
 The system can save multiple column layouts.
 
 **i ) Switch between layouts**
+=======
+>>>>>>> origin/master
 
 If you have created some layouts, you can switch between these layouts.
 1. Click on the ![edit-icon](img/edit-icon.png) icon that is at the top right corner of Employee List. A dropdown menu (as shown in Figure 1) is displayed. The current active layout is highlighted by light-blue in the menu.

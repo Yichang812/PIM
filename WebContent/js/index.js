@@ -1,29 +1,42 @@
-// parse request params
-var q1 = $.url().param('q1');
-$('input[name="q1"]').val(q1);
-var q2 = $.url().param('q2');
-$('input[name="q2"]').val(q2);
+// Yichang
+var my_db = {
+    layouts : alasql('SELECT * FROM layout', []),
+    colNames : alasql('SELECT * FROM colname', []),
+    colTypes : alasql('SHOW columns FROM emp')
+};
 
-// read data from database
-var emps;
-if (q1) {
-	emps = alasql('SELECT * FROM emp WHERE number LIKE ?', [ '%' + q1 + '%' ]);
-} else if (q2) {
-	emps = alasql('SELECT * FROM emp WHERE name LIKE ?', [ '%' + q2 + '%' ]);
-} else {
-	emps = alasql('SELECT * FROM emp', []);
-}
+var d_dialog = $('#dialog');
+var dialog = {
+    height : (window.innerHeight / 2 - d_dialog.height() / 2),
+    width : (window.innerWidth / 2 - d_dialog.width() / 2)
+};
 
-// create employee list
-var tbody = $('#tbody-emps');
-for (var i = 0; i < emps.length; i++) {
-	var emp = emps[i];
-	var tr = $('<tr></tr>');
-	tr.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-	tr.append('<td><a href="emp.html?id=' + emp.id + '">' + emp.number + '</a></td>');
-	tr.append('<td>' + emp.name + '</td>');
-	tr.append('<td>' + DB.choice(emp.sex) + '</td>');
-	tr.append('<td>' + emp.birthday + '</td>');
-	tr.append('<td>' + emp.tel + '</td>');
-	tr.appendTo(tbody);
-}
+//download table as Excel
+$(document).ready(function () {
+    var downloadBtn = $('#btn-download');
+
+    downloadBtn.click(function () {
+        $('#tbl-download').table2excel({
+            sheetName: getActiveLay(),
+            filename: getActiveLay(),
+            fileext: ".xls",
+            exclude_img: true,
+            exclude_links: true
+        });
+    });
+    $('#edit-dropdown').tooltip();
+
+    downloadBtn.tooltip();
+
+    $('#btn-format').popover({
+        trigger:'hover',
+        placement:'right',
+        container: 'body',
+        content:'Choose the kind of formatting you\' like for the column contents'
+    });
+
+
+
+});
+
+d_dialog.css({top:dialog.height,left:dialog.width});

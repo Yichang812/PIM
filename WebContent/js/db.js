@@ -9,10 +9,12 @@ DB.init = function() {
 DB.load = function() {
 	// personal info
 	alasql('DROP TABLE IF EXISTS emp;');
-	alasql('CREATE TABLE emp(id INT IDENTITY, number STRING, name STRING, sex INT, birthday DATE, tel STRING, ctct_name STRING, ctct_addr STRING, ctct_tel STRING, pspt_no STRING, pspt_date STRING, pspt_name STRING, rental STRING);');
+	alasql('CREATE TABLE emp(id INT IDENTITY, number STRING, name STRING, sex INT, birthday DATE, tel STRING, ' +
+		'ctct_name STRING, ctct_addr STRING, ctct_tel STRING, pspt_no STRING, pspt_date STRING, pspt_name STRING, ' +
+		'rental STRING, or_wage INT, add_wage INT, tar_amount INT, real INT, food STRING);');
 	var pemp = alasql.promise('SELECT MATRIX * FROM CSV("data/EMP-EMP.csv", {headers: true})').then(function(emps) {
 		for (var i = 0; i < emps.length; i++) {
-			alasql('INSERT INTO emp VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);', emps[i]);
+			alasql('INSERT INTO emp VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', emps[i]);
 		}
 	});
 
@@ -39,10 +41,11 @@ DB.load = function() {
 	// education
 	alasql('DROP TABLE IF EXISTS edu;');
 	alasql('CREATE TABLE edu(id INT IDENTITY, emp INT, school STRING, major STRING, grad STRING);');
-	var pedu = alasql.promise('SELECT MATRIX * FROM CSV("data/EDU-EDU.csv", {headers: true})').then(function(edus) {
-		for (var i = 0; i < edus.length; i++) {
-			alasql('INSERT INTO edu VALUES(?,?,?,?,?);', edus[i]);
-		}
+	var pedu = alasql.promise('SELECT MATRIX * FROM CSV("data/EDU-EDU.csv", {headers: true})').then(
+		function(edus) {
+			for (var i = 0; i < edus.length; i++) {
+				alasql('INSERT INTO edu VALUES(?,?,?,?,?);', edus[i]);
+			}
 	});
 
 	// choice
@@ -54,12 +57,58 @@ DB.load = function() {
 					alasql('INSERT INTO choice VALUES(?,?,?);', choices[i]);
 				}
 			});
+	//colname
+	alasql('DROP TABLE IF EXISTS colname');
+	alasql('CREATE TABLE colname(id INT IDENTITY, db_name STRING, web STRING);');
+	var pcolname = alasql.promise('SELECT MATRIX * FROM CSV("data/COL-COL.csv",{headers:true})').then(
+			function(colnames){
+				for(var i = 0; i< colnames.length; i++){
+					alasql('INSERT INTO colname VALUES(?,?,?);',colnames[i]);
+				}
+			}
+	);
+
+	//layout
+	alasql('DROP TABLE IF EXISTS layout');
+	alasql('CREATE TABLE layout(id INT IDENTITY, name STRING, active BOOLEAN);');
+	var playout = alasql.promise('SELECT MATRIX * FROM CSV("data/LAYOUT-LAYOUT.csv",{headers:true})').then(
+		function(layouts){
+			for(var i = 0; i< layouts.length; i++){
+				alasql('INSERT INTO layout VALUES(?,?,?);',layouts[i]);
+			}
+		}
+	);
+
+	//col-layout
+	alasql('DROP TABLE IF EXISTS colLayout');
+	alasql('CREATE TABLE colLayout(id INT IDENTITY, l_id INT, c_id INT);');
+	var pcolLayout = alasql.promise('SELECT MATRIX * FROM CSV("data/COLLAYOUT-COLLAYOUT.csv",{headers:true})').then(
+		function(colLayouts){
+			for(var i = 0; i< colLayouts.length; i++){
+				alasql('INSERT INTO colLayout VALUES(?,?,?);',colLayouts[i]);
+			}
+		}
+	);
+	//id,c1,c2,op,col,format,l_id
+	alasql('DROP TABLE IF EXISTS metric');
+	alasql('CREATE TABLE metric(id INT IDENTITY, c1 STRING, c2 STRING, op STRING, col STRING, format STRING, l_name STRING);');
+	var pmetric = alasql.promise('SELECT MATRIX * FROM CSV("data/METRIC-METRIC.csv",{headers:true})').then(
+		function(metrics){
+			for(var i = 0; i< metrics.length; i++){
+				alasql('INSERT INTO metric VALUES(?,?,?,?,?,?,?);',metrics[i]);
+			}
+		}
+	);
+
+
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice ]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, pcolname, playout, pcolLayout,pmetric]).then(function() {
 		window.location.reload(true);
 	});
 };
+
+
 
 DB.remove = function() {
 	if (window.confirm('are you sure do delete dababase?')) {

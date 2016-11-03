@@ -30,7 +30,7 @@
 }
 #dialog span:first-of-type {
     font-size: 30px;
-    margin-top: 40px;
+    margin-top: 70px;
 }
 #dialog span:last-of-type {
     font-size: 20px;
@@ -44,7 +44,6 @@
     margin: 30px;
 }
 
-
 #tbl-clone{
     display: none;
     position: fixed;
@@ -56,4 +55,8 @@
 #tbl-download td,#tbl-clone th{
     width:200px;
     overflow-x: hidden;
+}
+
+.glyphicon-heart{
+    color:#d9534f;
 }

@@ -1,2 +1,2 @@
-id,c1,c2,op,col,format,l_id
-1,Sale Amount,Target Amount,3,Complete Rate,2,Performance
+id,c1,c2,op,col,format,l_name
+1,,,,,,

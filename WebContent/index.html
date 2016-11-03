@@ -75,29 +75,89 @@
 				<span class="glyphicon glyphicon-search"></span> Search
 			</button>
 		</form>
-		<hr>
+		<!--<hr>-->
+		<br>
+		<div class="col-lg-8 col-lg-offset-2">
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-heart"></span>
+		</div>
+		<br>
 
-		<div class="dropdown pull-right" style="display: inline-block">
-		    
-		    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+
+
+		<button type="button" class="btn btn-success btn-sm pull-right" id="btn-download" style="margin-right: 10px"
+				data-toggle="tooltip" title="Download" data-placement="top">
+			<span class="glyphicon glyphicon-download-alt"></span>
+		</button>
+		<div class="dropdown pull-right" style="display: inline-block;margin-right: 10px;">
+		    <button type="button" class="btn btn-info btn-sm dropdown-toggle"
                     id="edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 					data-placement="top" title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="edit-dropdown" id="dropdown-edit">
-                <li><a href="emp-form.html"><span class="glyphicon glyphicon-plus"></span> New</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#new-layout">Layout</a></li>
-				<li><a href="#" data-toggle="modal" data-target="#custom-col">Custom Column</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header" id="layout-list">Column Layouts</li>
+                <li><a href="emp-form.html"><span class="glyphicon glyphicon-plus"></span> New Emp</a></li>
+				<li role="separator" class="divider"></li>
+				<li class="dropdown-header">Column Layout</li>
+                <li><a href="#" data-toggle="modal" data-target="#new-layout">New Layout</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#edit-layout" id="btn-edit">Edit /Delete Layout</a> </li>
+
+				<li role="separator" class="divider"></li>
+				<li class="dropdown-header">Custom Column</li>
+				<li><a href="#" data-toggle="modal" data-target="#custom-col">New Column</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#delete-col">Delete Column</a></li>
             </ul>
         </div>
 
-		<button type="button" class="btn btn-success btn-sm" id="btn-download" style="margin-right: 20px"
-        data-toggle="tooltip" title="Download" data-placement="top">
-            <span class="glyphicon glyphicon-download-alt"></span>
-        </button>
+		<div class="dropdown pull-right" style="display: inline-block;margin-right:10px;">
+			<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" id="layout-dropdown">
+				Layouts <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="layout-dropdown" id="dropdown-layout">
+
+			</ul>
+		</div>
+
+
         <br>
+		<br>
         <div class="table-responsive">
             <table class="table table-hover" id="tbl-download">
                 <thead>
@@ -126,7 +186,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">New Column Layout</h4>
+					<h4 class="modal-title">Create New Layout</h4>
 				</div>
 				<div class="modal-body">
 					<form id="new-layout-form">
@@ -141,7 +201,7 @@
 							</select>
 						</div>
                         <button type="button" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
-                        <button type="button" class="btn btn-warning pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>
+                        <!--<button type="button" class="btn btn-warning pull-right" id="btn-edit" style="width: 58px;margin-right:10px">Edit</button>-->
 						<button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="width: 58px;margin-right:10px">Close</button>
 
 					</form>
@@ -160,7 +220,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Edit Column Layout</h4>
+					<h4 class="modal-title">Edit /Delete Layout</h4>
 				</div>
 				<div class="modal-body">
 					<form>
@@ -179,9 +239,9 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-danger" id="btn-delete-lay">Delete</button>
-					<button type="button" class="btn btn-info" id="btn-edit-lay">Save</button>
+					<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+					<a type="button" class="btn btn-danger" id="btn-delete-lay">Delete</a>
+					<a type="button" class="btn btn-info disabled" id="btn-edit-lay">Save Changes</a>
 
 				</div>
 			</div>
@@ -267,12 +327,11 @@
 			</div>
 		</div>
 	</div>
-
+	<!--Delete confirm-->
     <div id="overlay"></div>
-
     <div id="dialog">
         <span>Do you want to Delete <strong id="delete-lay"></strong>?</span>
-        <span>This operation will delete the layout setting.<br>This operation can not be undone.</span>
+        <span>The operation is <strong>permanent</strong>.</span>
         <div>
             <button class="btn btn-danger btn-lg" id="btn-yes">Delete</button>
             <button class="btn btn-default btn-lg" id="btn-no">No</button>

@@ -1,4 +1,2 @@
 ID,NAME,ACTIVE
-1,CPF,true
-2,Health Insurance,false
-3,Performance,false
+1,Default,true

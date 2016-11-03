@@ -329,7 +329,44 @@ function init() {
 
 
 //=====================functions for setup modal contents============================
+//layout modal
+for (var i = 0; i<my_db.layouts.length; i++){
+    var layout = my_db.layouts[i];
+    var l_op = $('<option>'+layout.name+'</option>');
+    layout_name.append(l_op);
+}
 
+for (var i = 0; i<my_db.colNames.length; i++){
+    var colName = my_db.colNames[i];
+    var c_op = $('<option>'+colName.web+'</option>');
+    c_op.attr('value',colName.id);
+    col_name_new.append(c_op);
+    col_name_edit.append(c_op.clone());
+}
+
+$('#btn-edit').click(function () {
+    // new_modal.modal('hide');
+    // edit_modal.modal('show');
+    var currentLay = layout_name.val();
+    console.log(currentLay);
+    col_name_edit.multipleSelect("setSelects",getColList(currentLay));
+});
+
+$(function() {
+    col_name_new.multipleSelect({
+        width: '100%'
+    });
+    col_name_edit.multipleSelect({
+        width: '100%'
+    });
+});
+
+//custom column modal
+var colList = getNumColList();
+for(var i = 0; i<colList.length; i++){
+    var op = $('<li><a href="#">'+findNameByDB(colList[i])+'</a></li>');
+    $('#col1,#col2').append(op);
+}
 
 
 $(document).ready(function () {
@@ -340,18 +377,6 @@ $(document).ready(function () {
     var custom_col_name = $('#custom-col-name');
     var col_name_input = $('.col-name-input');
 
-    //switch layout
-    $('.opt-layout').click(function () {
-        resetTable( $(this).text());
-    });
-
-    //===========custom col===============
-    //custom column modal
-    var colList = getNumColList();
-    for(var i = 0; i<colList.length; i++){
-        var op = $('<li><a href="#">'+findNameByDB(colList[i])+'</a></li>');
-        $('#col1,#col2').append(op);
-    }
 
     var metric_def = {
         symbol : '0',
@@ -372,6 +397,7 @@ $(document).ready(function () {
         updateMetricDef(metric_def);
     });
 
+
     format.click(function(){
         $('#format-text').text($(this).text());
         metric_def.format = $(this).attr('value')
@@ -381,8 +407,7 @@ $(document).ready(function () {
         metric_def.symbol = $(this).val();
         updateMetricDef(metric_def);
     });
-
-    //create
+//create custom col
     $('#btn-save-col').click(function () {
         var name = custom_col_name.val();
         var layout = getActiveLay();
@@ -400,43 +425,16 @@ $(document).ready(function () {
         setCusCol(metric_def.col1,metric_def.col2,metric_def.symbol,name,metric_def.format,layout);
     });
 
-    //delete
-    $('#')
-
-
-//===========Layout=============
-
-    //layout modal
-    for (var i = 0; i<my_db.layouts.length; i++){
-        var layout = my_db.layouts[i];
-        var l_op = $('<option>'+layout.name+'</option>');
-        layout_name.append(l_op);
-    }
-
-    for (var i = 0; i<my_db.colNames.length; i++){
-        var colName = my_db.colNames[i];
-        var c_op = $('<option>'+colName.web+'</option>');
-        c_op.attr('value',colName.id);
-        col_name_new.append(c_op);
-        col_name_edit.append(c_op.clone());
-    }
-
-    $('#btn-edit').click(function () {
-        // new_modal.modal('hide');
-        // edit_modal.modal('show');
-        var currentLay = layout_name.val();
-        console.log(currentLay);
-        col_name_edit.multipleSelect("setSelects",getColList(currentLay));
+//update table
+    $('.opt-layout').click(function () {
+        resetTable( $(this).text());
     });
 
-    $(function() {
-        col_name_new.multipleSelect({
-            width: '100%'
-        });
-        col_name_edit.multipleSelect({
-            width: '100%'
-        });
+//Read
+    layout_name.change(function () {
+        col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
     });
+
 //Create
     $('#btn-create-lay').click(function () {
         var l_id = alasql('SELECT MAX(id) + 1 as id FROM layout')[0].id;
@@ -480,10 +478,6 @@ $(document).ready(function () {
     });
 
 //edit layout
-    //Read
-    layout_name.change(function () {
-        col_name_edit.multipleSelect("setSelects",getColList($(this).val()));
-    });
     $('#btn-edit-lay').click(function () {
         var editName = layout_name.val();
         var cols = $('#col-name-edit').val();

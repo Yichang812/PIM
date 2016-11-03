@@ -11,7 +11,7 @@ list as following:
 A column layout is a saved set of columns that will display on the Employee List page.
 The system can save multiple column layouts.
 
-**i Switch between layouts**
+#### Switch between layouts
 
 If you have created some layouts, you can switch between these layouts.
 1. Click on the ![edit-icon](img/edit-icon.png) icon that is at the top right corner of Employee List. A dropdown menu (as shown in Figure 1) is displayed. The current active layout is highlighted by light-blue in the menu.
@@ -21,7 +21,7 @@ If you have created some layouts, you can switch between these layouts.
 
 *Figure 1*
 
-**ii Create a new layout**
+#### Create a new layout
 You can always create a new column layouts.
 1. Select 'Layout' in the menu shown in Figure 1. A dialog box (as shown in Figure 2) is displayed .
 
@@ -39,7 +39,7 @@ You can always create a new column layouts.
 
 4. When you've completed your layout setting, click **Save**. The layout will be applied to Employee List page and saved to database automatically.
 
-**iii Edit a saved layout**
+#### Edit a saved layout
 You can also edit a saved layout.
 
 1. Click **Edit** on New Column Layout dialog box (Figure 2). Another dialog box (as shown in Figure 4) for editing layout will be displayed.
@@ -52,7 +52,7 @@ You can also edit a saved layout.
 3. In the 'Column' field check the columns you want to show and uncheck the columns that you want to hide.
 4. When you've completed your editing, click **Save**. The edited layout will be applied to Employee List page and the modification will be save automatically.
 
-**iv Delete a saved layout**
+#### Delete a saved layout
 You can delete a layout once it is not required anymore.
 1. Click **Delete** on Edit Column Layout dialog box (Figure 4). A confirm box (as shown in Figure 5) is displayed.
 
@@ -87,7 +87,7 @@ If you have certain metric that you'd like to see reported on Employee List page
 
 ### III Download Employee List
 When you want to share the information in current Employee List page, you can download the content as Excel file.
-1. Click on the ![download-icon](img\download.png) that is at the top left corner of Employee List.  
+1. Click on the ![download-icon](img/download.png) that is at the top left corner of Employee List.  
 2. An Excel file (as shown in Figure 9) named by current layout will be downloaded into you local. The link and image will NOT be included.
 
   ![Excel-file](img/excel.png)

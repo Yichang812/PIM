@@ -24,8 +24,8 @@ $(document).ready(function () {
             exclude_links: true
         });
     });
-    $('#edit-dropdown').tooltip();
-
+    $('#layout-dropdown').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();
     downloadBtn.tooltip();
 
     $('#btn-format').popover({

@@ -57,6 +57,39 @@
     overflow-x: hidden;
 }
 
-.glyphicon-heart{
-    color:#FF69B4;
+.icon-rotate{
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.icon-overlap{
+    position: absolute;
+    top: 16px;
+    left: 20px;
+}
+
+#btn-new-col{
+    color:#ccc;
+}
+#btn-new-col:hover{
+    color:#000;
+}
+thead>tr>th:last-child{
+    width:29px;
+}
+h3{
+    margin-top:0;
+}
+
+#dropdown-col-list li{
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
 }

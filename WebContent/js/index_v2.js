@@ -127,10 +127,10 @@ function existLName(name){
 function getColVals(col){
     col = findDBByName(col);
     var vals = [];
-   for(var i = 0; i <emps.length; i++){
-       var val = parseFloat(emps[i][col]);
-       vals.push(val);
-   }
+    for(var i = 0; i <emps.length; i++){
+        var val = parseFloat(emps[i][col]);
+        vals.push(val);
+    }
     return vals;
 }
 
@@ -343,10 +343,16 @@ for (var i = 0; i<my_db.layouts.length; i++){
 for (var i = 1; i<my_db.colNames.length; i++){
     var colName = my_db.colNames[i];
     var c_op = $('<option>'+colName.web+'</option>');
+    var c_li = $('<li><input type="checkbox" id="'+colName.db_name+'"> '+colName.web+'</li>');
+    $('#dropdown-col-list').append(c_li);
     c_op.attr('value',colName.id);
     col_name_new.append(c_op);
     col_name_edit.append(c_op.clone());
 }
+
+$('#dropdown-col-list input').change(function () {
+    console.log($(this).attr('id'));
+});
 
 $('#btn-edit').click(function () {
     // new_modal.modal('hide');
@@ -513,4 +519,6 @@ $(document).ready(function () {
     $(document).on('click','tbody tr',function () {
         window.location.href = 'emp.html?id=' + $(this).attr('id');
     });
-});
+});/**
+ * Created by li_yi-pc on 11/4/2016.
+ */

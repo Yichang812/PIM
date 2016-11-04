@@ -210,7 +210,7 @@ function fillCol(col1,col2, op, col, format){
     var c2 = getColVals(col2);
     var result = getResult(c1, c2, op, format);
     $('tbody tr').each(function(index){
-        td = $('<td>'+result[index]+'</td>');
+        td = $('<td class="col1">'+result[index]+'</td>');
         $(this).append(td);
     });
 }
@@ -285,7 +285,7 @@ function initMenu(){
     for (var i = 0; i<my_db.layouts.length; i++) {
         var layout = my_db.layouts[i];
         var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
-        $('#dropdown-layout').prepend(li);
+        li.insertBefore('#menu-divider');
     }
     return true;
 }
@@ -349,8 +349,6 @@ for (var i = 1; i<my_db.colNames.length; i++){
 }
 
 $('#btn-edit').click(function () {
-    // new_modal.modal('hide');
-    // edit_modal.modal('show');
     var currentLay = layout_name.val();
     console.log(currentLay);
     col_name_edit.multipleSelect("setSelects",getColList(currentLay));
@@ -359,11 +357,13 @@ $('#btn-edit').click(function () {
 $(function() {
     col_name_new.multipleSelect({
         width: '100%',
-        selectAll: false
+        selectAll: false,
+        filter:true
     });
     col_name_edit.multipleSelect({
         width: '100%',
-        selectAll: false
+        selectAll: false,
+        filter:true
     });
 });
 
@@ -512,5 +512,9 @@ $(document).ready(function () {
     //show employee's individual page when click on the row
     $(document).on('click','tbody tr',function () {
         window.location.href = 'emp.html?id=' + $(this).attr('id');
+    });
+    
+    $('#btn-show').click(function () {
+        $('.col1').toggleClass('hide')
     });
 });

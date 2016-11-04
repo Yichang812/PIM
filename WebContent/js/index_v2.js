@@ -4,8 +4,6 @@ var q2 = $.url().param('q2');
 $('input[name="q2"]').val(q2);
 
 
-
-
 var emps;
 if (q1) {
     emps = alasql('SELECT * FROM emp WHERE number LIKE ?', [ '%' + q1 + '%' ]);
@@ -31,7 +29,8 @@ var format = $('#format').find('li');
 var operation = $('#operation').find('input');
 var lay_name_input = $('.lay-name-input');
 
-//Tools
+//DB Functions
+var cols = alasql('SELECT * from colname');
 function findIdByName(name){
     return alasql('COLUMN OF SELECT id FROM layout WHERE name=?',[name])[0];
 }
@@ -43,6 +42,7 @@ function findDBByName(name){
 function findNameByDB(db){
     return alasql('COLUMN OF SELECT web FROM colname WHERE db_name=?',[db])[0];
 }
+
 function findColName(c_id){
     return alasql('COLUMN OF SELECT web FROM colname WHERE id=?',[c_id])[0];
 }
@@ -51,14 +51,10 @@ function findColDB(c_id){
     return alasql('COLUMN OF SELECT db_name FROM colname WHERE id=?',[c_id])[0];
 }
 
-function findColId(name){
-
-    return  alasql('COLUMN OF SELECT id FROM colname WHERE web=?',[name])[0];
-}
-
 function findCusCol(l_name){
     return alasql('SELECT c1,c2,op,col,format FROM metric WHERE l_name=?',[l_name]);
 }
+
 function getColList(name){
     return alasql('COLUMN OF SELECT c_id FROM colLayout WHERE l_id=?',[findIdByName(name)]);
 }
@@ -99,24 +95,31 @@ function getNumColList(){
     return list;
 }
 
+function updateColLayout(l_id,cols) {
+    var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
+    for(var i = 0; i<cols.length; i++){
+        alasql('INSERT INTO colLayout VALUES (?,?,?)',[n.toString(),l_id.toString(),cols[i].toString()]);
+        n++;
+    }
+}
+
+function setActiveLay(name) {
+    alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
+    alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
+    highlightActive(name);
+}
+
+//===================Function for custom column=================
+
 function setCusCol(c1,c2,op,col,format,layout){
     var id = alasql('SELECT MAX(id) + 1 as id FROM metric')[0].id;
     alasql('INSERT INTO metric VALUES(?,?,?,?,?,?,?)',[id.id,c1,c2,op,col,format,layout])
 }
+
 function existCName(name){
     var colnames = my_db.colNames;
     for(var i = 0; i<colnames.length; i++){
         if(colnames[i].web === name){
-            //the name exists
-            return true;
-        }
-    }
-    return false;
-}
-function existLName(name){
-    var laynames = my_db.layouts;
-    for(var i = 0; i<laynames.length; i++){
-        if(laynames[i].name === name){
             //the name exists
             return true;
         }
@@ -160,6 +163,7 @@ function getSum(col1,col2){
     }
     return result;
 }
+
 function getDiff(col1,col2){
     var result = [];
     for(var i=0;i<col1.length;i++){
@@ -167,6 +171,7 @@ function getDiff(col1,col2){
     }
     return result;
 }
+
 function getProduct(col1,col2){
     var result = [];
     for(var i=0;i<col1.length;i++){
@@ -174,6 +179,7 @@ function getProduct(col1,col2){
     }
     return result;
 }
+
 function getQuotient(col1,col2){
     var result = [];
     for(var i=0;i<col1.length;i++){
@@ -181,6 +187,7 @@ function getQuotient(col1,col2){
     }
     return result;
 }
+
 function getResult(col1, col2, op, format){
     var result = [];
     switch(op.toString()){
@@ -227,14 +234,8 @@ function updateMetricDef(ob){
 
     $('#def-panel').empty().append(c1).append(oper).append(c2);
 }
-
-function updateColLayout(l_id,cols) {
-    var n = alasql('SELECT MAX(id) + 1 as id FROM colLayout')[0].id;
-    for(var i = 0; i<cols.length; i++){
-        alasql('INSERT INTO colLayout VALUES (?,?,?)',[n.toString(),l_id.toString(),cols[i].toString()]);
-        n++;
-    }
-}
+//======================================
+//highlight the current active layout
 function highlightActive(name) {
 
     $('.opt-layout').each(function () {
@@ -246,41 +247,18 @@ function highlightActive(name) {
     });
 }
 
-function fillTable(cols){
-    for(var i = 0; i<cols.length; i++){
-        theader.append('<th>'+findColName(cols[i])+'</th>');
-        // cloneh.append('<th>'+findColName(cols[i])+'</th>');
+//validate if the layout name exist
+function existLName(name){
+    var laynames = my_db.layouts;
+    for(var i = 0; i<laynames.length; i++){
+        if(laynames[i].name === name){
+            //the name exists
+            return true;
+        }
     }
-    theader.append('<th id="last-th"><a href="#" data-toggle="modal" id="btn-new-col" data-target="#custom-col" title="New Column" data-placement="right"><span class="glyphicon glyphicon-plus"></span> </a></th>');
-    for (var i = 0; i < emps.length; i++) {
-        var emp = emps[i];
-        var row = $('<tr id="'+emp.id+'"></tr>');
-        for (var n = 0; n < cols.length; n++) {
-            switch (cols[n]) {
-                case 1:
-                    row.append('<td><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
-                    break;
-                case 4:
-                    row.append('<td>' + DB.choice(emp.sex) + '</td>');
-                    break;
-                case 19:
-                    row.append('<td>' + getAddress(emp.id) + '</td>');
-                    break;
-                case 20:
-                    row.append('<td>' + getFamily(emp.id) + '</td>');
-                    break;
-                case 21:
-                    row.append('<td>' + getEdu(emp.id) + '</td>');
-                    break;
-                default:
-                    row.append('<td>' + emp[findColDB(cols[n])] + '</td>');
-            }//switch
-        }//for each record
-        row.appendTo('#tbody-emps');
-    }
-
-    //Custom col
+    return false;
 }
+
 function initMenu(){
     for (var i = 0; i<my_db.layouts.length; i++) {
         var layout = my_db.layouts[i];
@@ -294,15 +272,12 @@ function getFirstLay() {
     var first_lay = alasql('SELECT * FROM layout',[])[0];
     return first_lay.name;
 }
+
 function getActiveLay() {
     var active_lay = alasql('SELECT * FROM layout WHERE active=?', ["true"])[0];
     return active_lay.name;
 }
-function setActiveLay(name) {
-    alasql('UPDATE layout SET active="false" WHERE active="true"',[]);
-    alasql('UPDATE layout SET active="true" WHERE name=?',[name]);
-    highlightActive(name);
-}
+
 function resetTable(layout) {
     theader.children('th').remove();
     trecords.children('tr').remove();
@@ -317,20 +292,50 @@ function resetTable(layout) {
     }
     // location.reload(true);//refresh
 }
-function init() {
-    var activeLay = getActiveLay();
-    $('#cur-lay-name').text(activeLay);
-    fillTable(getColList(activeLay));
-    initMenu();
-    var metrics = findCusCol(getActiveLay());
-    for(var i = 0; i<metrics.length; i++){
-        var metric = metrics[i];
-        fillCol(metric.c1,metric.c2, metric.op, metric.col, metric.format);
+
+//==============new function============================
+function initTable(){
+    //fill table header
+    for(var i=0;i<cols.length;i++) {
+        theader.append('<th class="' + 'col' + (i+1) + '">' + cols[i].web + '</th>');
     }
-    highlightActive(getActiveLay());
+    theader.append('<th id="last-th"><a href="#" data-toggle="modal" id="btn-new-col" data-target="#custom-col" title="New Column" data-placement="right"><span class="glyphicon glyphicon-plus"></span> </a></th>');
+
+    for(var i = 0;i<emps.length;i++){
+        var emp = emps[i];
+        var row = $('<tr id="'+emp.id+'"></tr>');
+        for(var n =0;n<cols.length;n++){
+            var c = 'col'+(n+1);
+            switch (n+1) {
+                case 1:
+                    row.append('<td class="'+c+'"><img height=40 class="img-circle" src="img/' + emp.id + '.jpg"></td>');
+                    break;
+                case 4:
+                    row.append('<td class="'+c+'">' + DB.choice(emp.sex) + '</td>');
+                    break;
+                case 19:
+                    row.append('<td class="'+c+'">' + getAddress(emp.id) + '</td>');
+                    break;
+                case 19:
+                    row.append('<td class="'+c+'">' + getFamily(emp.id) + '</td>');
+                    break;
+                case 21:
+                    row.append('<td class="'+c+'">' + getEdu(emp.id) + '</td>');
+                    break;
+                default:
+                    row.append('<td class="'+c+'">' + emp[findColDB(n+1)] + '</td>');
+            }//switch
+        }//for each cell
+        row.appendTo('#tbody-emps');
+    }//for each row
 
 }
 
+function updateTable(id){
+    var $elem = $('.col'+id);
+    console.log($elem);
+    $elem.toggleClass('hide');
+}
 
 //=====================functions for setup modal contents============================
 //layout modal
@@ -342,21 +347,15 @@ for (var i = 0; i<my_db.layouts.length; i++){
 
 for (var i = 1; i<my_db.colNames.length; i++){
     var colName = my_db.colNames[i];
-    var c_op = $('<option>'+colName.web+'</option>');
-    var c_li = $('<li><input type="checkbox" id="'+colName.db_name+'"> '+colName.web+'</li>');
+    var c_li = $('<li><input type="checkbox" id="'+colName.id+'"> '+colName.web+'</li>');
     $('#dropdown-col-list').append(c_li);
-    c_op.attr('value',colName.id);
-    col_name_new.append(c_op);
-    col_name_edit.append(c_op.clone());
 }
 
 $('#dropdown-col-list input').change(function () {
-    console.log($(this).attr('id'));
+    updateTable($(this).attr('id'));
 });
 
 $('#btn-edit').click(function () {
-    // new_modal.modal('hide');
-    // edit_modal.modal('show');
     var currentLay = layout_name.val();
     console.log(currentLay);
     col_name_edit.multipleSelect("setSelects",getColList(currentLay));
@@ -383,7 +382,7 @@ for(var i = 0; i<colList.length; i++){
 
 $(document).ready(function () {
     //init view
-    init();
+    initTable();
     $('#btn-new-col').tooltip();
     var custom_col_modal = $('#custom-col');
     var custom_col_name = $('#custom-col-name');
@@ -439,7 +438,7 @@ $(document).ready(function () {
         setCusCol(metric_def.col1,metric_def.col2,metric_def.symbol,name,metric_def.format,layout);
     });
 
-//update table
+//update table layout when
     $('.opt-layout').click(function () {
         resetTable( $(this).text());
     });
@@ -519,6 +518,4 @@ $(document).ready(function () {
     $(document).on('click','tbody tr',function () {
         window.location.href = 'emp.html?id=' + $(this).attr('id');
     });
-});/**
- * Created by li_yi-pc on 11/4/2016.
- */
+});

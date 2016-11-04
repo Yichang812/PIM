@@ -5,17 +5,7 @@
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/index.css" rel="stylesheet" />
 	<link href="css/multiple-select.css" rel="stylesheet"/>
-	<!--&lt;!&ndash; Latest compiled and minified CSS &ndash;&gt;-->
-	<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">-->
-
-
 	<script src="lib/bootstrap.js"></script>
-	<!--&lt;!&ndash; Latest compiled and minified JavaScript &ndash;&gt;-->
-	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>-->
-
-	<!--&lt;!&ndash; Latest compiled and minified Locales &ndash;&gt;-->
-	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-en-US.min.js"></script>-->
-
 	<script src="lib/alasql.js"></script>
 	<script src="lib/purl.js"></script>
 	<script src="lib/jquery-table2excel.js"></script>
@@ -89,16 +79,19 @@
 				<a type="button" href="emp-form.html" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="New Employee"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-plus-sign icon-overlap"></span> </a>
 				<a type="button" class="btn btn-default" id="btn-download" data-toggle="tooltip" title="Download" data-placement="top"><span class="glyphicon glyphicon-download-alt"></span> </a>
 				<div class="btn-group" role="group">
-				<a type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="layout-dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Layout">
-					<span class="glyphicon glyphicon-th-list icon-rotate"></span> <span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu" aria-labelledby="layout-dropdown" id="dropdown-layout">
-					<li class="divider"></li>
-					<li><a href="#" data-toggle="modal" data-target="#new-layout">New Layout</a></li>
-					<li><a href="#" data-toggle="modal" data-target="#edit-layout" id="btn-edit"><span class="glyphicon glyphicon-edit"></span> Edit /Delete Layout</a> </li>
-					<li><a href="#" data-toggle="modal" data-target="#custom-col"><span class="glyphicon glyphicon-plus"></span> New Column</a> </li>
-				</ul>
-			</div>
+					<a type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="layout-dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Layout">
+						<span class="glyphicon glyphicon-th-list icon-rotate"></span> <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="layout-dropdown" id="dropdown-layout">
+						<li class="dropdown-header">Saved Layouts</li>
+						<li class="divider" id="menu-divider"></li>
+						<li class="dropdown-header">Tools</li>
+						<li><a href="#" data-toggle="modal" data-target="#new-layout"><span class="glyphicon glyphicon-th-list icon-rotate"></span><span class="glyphicon glyphicon-plus-sign icon-overlap-2"></span> New Layout</a></li>
+						<li><a href="#" data-toggle="modal" data-target="#edit-layout" id="btn-edit"><span class="glyphicon glyphicon-pencil icon-margin"></span> Edit /Delete Layout</a> </li>
+						<li><a href="#" data-toggle="modal" data-target="#custom-col"><img src="img/imageedit_1_9611779332.gif" class="icon icon-margin"/> New Column</a> </li>
+					</ul>
+				</div>
+				<!--<a type="button" class="btn btn-default" id="btn-show"><span class="glyphicon glyphicon-eye-open"></span> </a>-->
 			</div>
 		</div>
 

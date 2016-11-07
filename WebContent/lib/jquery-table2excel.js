@@ -33,9 +33,8 @@
         init: function () {
             var e = this;
 
-            var utf8Heading = "<meta http-equiv=\"content-type\" content=\"application/vnd.ms-excel; charset=UTF-8\">";
             e.template = {
-                head: "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\">" + utf8Heading + "<head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>",
+                head: "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>",
                 sheet: {
                     head: "<x:ExcelWorksheet><x:Name>",
                     tail: "</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>"
@@ -59,10 +58,25 @@
                 e.tableRows.push(tempRows);
             });
 
-            e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
+            // exclude img tags
+            if(e.settings.exclude_img) {
+                e.tableRows[0] = exclude_img(e.tableRows[0]);
+            }
+
+            // exclude link tags
+            if(e.settings.exclude_links) {
+                e.tableRows[0] = exclude_links(e.tableRows[0]);
+            }
+
+            // exclude input tags
+            if(e.settings.exclude_inputs) {
+                e.tableRows[0] = exclude_inputs(e.tableRows[0])
+            }
+
+            e.tableToExcel(e.tableRows, e.settings.name);
         },
 
-        tableToExcel: function (table, name, sheetName) {
+        tableToExcel: function (table, name) {
             var e = this, fullTemplate="", i, link, a;
 
             e.uri = "data:application/vnd.ms-excel;base64,";
@@ -74,13 +88,9 @@
                     return c[p];
                 });
             };
-
-            sheetName = typeof sheetName === "undefined" ? "Sheet" : sheetName;
-
             e.ctx = {
                 worksheet: name || "Worksheet",
-                table: table,
-                sheetName: sheetName,
+                table: table
             };
 
             fullTemplate= e.template.head;
@@ -88,7 +98,7 @@
             if ( $.isArray(table) ) {
                 for (i in table) {
                     //fullTemplate += e.template.sheet.head + "{worksheet" + i + "}" + e.template.sheet.tail;
-                    fullTemplate += e.template.sheet.head + sheetName + e.template.sheet.tail;
+                    fullTemplate += e.template.sheet.head + "Table" + i + "" + e.template.sheet.tail;
                 }
             }
 
@@ -107,6 +117,7 @@
             }
             delete e.ctx.table;
 
+
             if (typeof msie !== "undefined" && msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
             {
                 if (typeof Blob !== "undefined") {
@@ -119,7 +130,7 @@
                     //otherwise use the iframe and save
                     //requires a blank iframe on page called txtArea1
                     txtArea1.document.open("text/html", "replace");
-                    txtArea1.document.write(e.format(fullTemplate, e.ctx));
+                    txtArea1.document.write(fullTemplate);
                     txtArea1.document.close();
                     txtArea1.focus();
                     sa = txtArea1.document.execCommand("SaveAs", true, getFileName(e.settings) );
@@ -130,21 +141,31 @@
                 a = document.createElement("a");
                 a.download = getFileName(e.settings);
                 a.href = link;
-
-                document.body.appendChild(a);
-
                 a.click();
-
-                document.body.removeChild(a);
             }
 
             return true;
+
         }
     };
 
     function getFileName(settings) {
-        return ( settings.filename ? settings.filename : "table2excel" ) +
-            ( settings.fileext ? settings.fileext : ".xlsx" );
+        return ( settings.filename ? settings.filename : "table2excel") + ".xls";
+    }
+
+    // Removes all img tags
+    function exclude_img(string) {
+        return string.replace(/<img[^>]*>/gi,"");
+    }
+
+    // Removes all link tags
+    function exclude_links(string) {
+        return string.replace(/<A[^>]*>|<\/A>/g, "");
+    }
+
+    // Removes input params
+    function exclude_inputs(string) {
+        return string.replace(/<input[^>]*>|<\/input>/gi, "");
     }
 
     $.fn[ pluginName ] = function ( options ) {

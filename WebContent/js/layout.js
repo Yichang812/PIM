@@ -25,7 +25,6 @@ var trecords = $('#tbl-download tbody');
 var theader = $('#tbl-download thead tr');
 var layout_input = $('#new-layout-name');
 var clonet = $('#tbl-clone');
-var cloneh = $('#tbl-clone thead tr');
 var d_alert = $('#overlay,#dialog');
 var format = $('#format').find('li');
 var operation = $('#operation').find('input');
@@ -49,11 +48,6 @@ function findColName(c_id){
 
 function findColDB(c_id){
     return alasql('COLUMN OF SELECT db_name FROM colname WHERE id=?',[c_id])[0];
-}
-
-function findColId(name){
-
-    return  alasql('COLUMN OF SELECT id FROM colname WHERE web=?',[name])[0];
 }
 
 function findCusCol(l_name){
@@ -204,13 +198,12 @@ function getResult(col1, col2, op, format){
 
 function fillCol(col1,col2, op, col, format){
     var td;
-    theader.append('<th>'+col+'</th>');
-    cloneh.append('<th>'+col+'</th>');
+    $('<th>'+col+'</th>').insertBefore('#last-th');
     var c1 = getColVals(col1);
     var c2 = getColVals(col2);
     var result = getResult(c1, c2, op, format);
     $('tbody tr').each(function(index){
-        td = $('<td>'+result[index]+'</td>');
+        td = $('<td class="col1">'+result[index]+'</td>');
         $(this).append(td);
     });
 }
@@ -249,8 +242,8 @@ function highlightActive(name) {
 function fillTable(cols){
     for(var i = 0; i<cols.length; i++){
         theader.append('<th>'+findColName(cols[i])+'</th>');
-        cloneh.append('<th>'+findColName(cols[i])+'</th>');
     }
+    theader.append('<th id="last-th"><a href="#" data-toggle="modal" id="btn-new-col" data-target="#custom-col" title="New Column" data-placement="right"><span class="glyphicon glyphicon-plus"></span> </a></th>');
     for (var i = 0; i < emps.length; i++) {
         var emp = emps[i];
         var row = $('<tr id="'+emp.id+'"></tr>');
@@ -284,7 +277,7 @@ function initMenu(){
     for (var i = 0; i<my_db.layouts.length; i++) {
         var layout = my_db.layouts[i];
         var li = $('<li class="opt-layout"><a>' + layout.name + '</a></li>');
-        $('#dropdown-layout').append(li);
+        li.insertBefore('#menu-divider');
     }
     return true;
 }
@@ -305,18 +298,19 @@ function setActiveLay(name) {
 function resetTable(layout) {
     theader.children('th').remove();
     trecords.children('tr').remove();
-    cloneh.children('th').remove();
     setActiveLay(layout);
     fillTable(getColList(getActiveLay()));
+    $('#cur-lay-name').text(layout);
     var metrics = findCusCol(layout);
     for(var i = 0; i<metrics.length; i++){
         var metric = metrics[i];
         fillCol(metric.c1,metric.c2, metric.op, metric.col, metric.format);
     }
-    // location.reload(true);//refresh
 }
 function init() {
-    fillTable(getColList(getActiveLay()));
+    var activeLay = getActiveLay();
+    $('#cur-lay-name').text(activeLay);
+    fillTable(getColList(activeLay));
     initMenu();
     var metrics = findCusCol(getActiveLay());
     for(var i = 0; i<metrics.length; i++){
@@ -345,19 +339,22 @@ for (var i = 0; i<my_db.colNames.length; i++){
 }
 
 $('#btn-edit').click(function () {
-    // new_modal.modal('hide');
-    // edit_modal.modal('show');
-    var currentLay = layout_name.val();
+    var currentLay = getActiveLay();
+    layout_name.val(currentLay);
     console.log(currentLay);
     col_name_edit.multipleSelect("setSelects",getColList(currentLay));
 });
 
 $(function() {
     col_name_new.multipleSelect({
-        width: '100%'
+        width: '100%',
+        selectAll: false,
+        filter:true
     });
     col_name_edit.multipleSelect({
-        width: '100%'
+        width: '100%',
+        selectAll: false,
+        filter:true
     });
 });
 
@@ -372,7 +369,7 @@ for(var i = 0; i<colList.length; i++){
 $(document).ready(function () {
     //init view
     init();
-
+    $('#btn-new-col').tooltip();
     var custom_col_modal = $('#custom-col');
     var custom_col_name = $('#custom-col-name');
     var col_name_input = $('.col-name-input');
@@ -383,17 +380,19 @@ $(document).ready(function () {
         format : '1'
     };
 
-    $('.ms-drop').find('input').change(function () {
+    $('.ms-drop').find('input').on('change',function () {
         $('#btn-edit-lay').toggleClass('disabled');
     });
 
-    $('#col1').find('li').click(function () {
-        metric_def['col1'] = $(this).text();
+    $('#col1').find('li').on('click',function () {
+        var col_name = $(this).text();
+        metric_def['col1'] = col_name;
         updateMetricDef(metric_def);
     });
 
-    $('#col2').find('li').click(function () {
-        metric_def['col2'] = $(this).text();
+    $('#col2').find('li').on('click',function () {
+        var col_name = $(this).text();
+        metric_def['col2'] = col_name;
         updateMetricDef(metric_def);
     });
 
@@ -504,5 +503,9 @@ $(document).ready(function () {
     //show employee's individual page when click on the row
     $(document).on('click','tbody tr',function () {
         window.location.href = 'emp.html?id=' + $(this).attr('id');
+    });
+    
+    $('#btn-show').click(function () {
+        $('.col1').toggleClass('hide')
     });
 });

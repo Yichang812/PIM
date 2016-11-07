@@ -25,7 +25,6 @@ var trecords = $('#tbl-download tbody');
 var theader = $('#tbl-download thead tr');
 var layout_input = $('#new-layout-name');
 var clonet = $('#tbl-clone');
-// var cloneh = $('#tbl-clone thead tr');
 var d_alert = $('#overlay,#dialog');
 var format = $('#format').find('li');
 var operation = $('#operation').find('input');
@@ -49,11 +48,6 @@ function findColName(c_id){
 
 function findColDB(c_id){
     return alasql('COLUMN OF SELECT db_name FROM colname WHERE id=?',[c_id])[0];
-}
-
-function findColId(name){
-
-    return  alasql('COLUMN OF SELECT id FROM colname WHERE web=?',[name])[0];
 }
 
 function findCusCol(l_name){
@@ -205,7 +199,6 @@ function getResult(col1, col2, op, format){
 function fillCol(col1,col2, op, col, format){
     var td;
     $('<th>'+col+'</th>').insertBefore('#last-th');
-    // cloneh.append('<th>'+col+'</th>');
     var c1 = getColVals(col1);
     var c2 = getColVals(col2);
     var result = getResult(c1, c2, op, format);
@@ -249,7 +242,6 @@ function highlightActive(name) {
 function fillTable(cols){
     for(var i = 0; i<cols.length; i++){
         theader.append('<th>'+findColName(cols[i])+'</th>');
-        // cloneh.append('<th>'+findColName(cols[i])+'</th>');
     }
     theader.append('<th id="last-th"><a href="#" data-toggle="modal" id="btn-new-col" data-target="#custom-col" title="New Column" data-placement="right"><span class="glyphicon glyphicon-plus"></span> </a></th>');
     for (var i = 0; i < emps.length; i++) {
@@ -306,7 +298,6 @@ function setActiveLay(name) {
 function resetTable(layout) {
     theader.children('th').remove();
     trecords.children('tr').remove();
-    // cloneh.children('th').remove();
     setActiveLay(layout);
     fillTable(getColList(getActiveLay()));
     $('#cur-lay-name').text(layout);
@@ -315,7 +306,6 @@ function resetTable(layout) {
         var metric = metrics[i];
         fillCol(metric.c1,metric.c2, metric.op, metric.col, metric.format);
     }
-    // location.reload(true);//refresh
 }
 function init() {
     var activeLay = getActiveLay();
@@ -340,7 +330,7 @@ for (var i = 0; i<my_db.layouts.length; i++){
     layout_name.append(l_op);
 }
 
-for (var i = 1; i<my_db.colNames.length; i++){
+for (var i = 0; i<my_db.colNames.length; i++){
     var colName = my_db.colNames[i];
     var c_op = $('<option>'+colName.web+'</option>');
     c_op.attr('value',colName.id);
@@ -349,7 +339,8 @@ for (var i = 1; i<my_db.colNames.length; i++){
 }
 
 $('#btn-edit').click(function () {
-    var currentLay = layout_name.val();
+    var currentLay = getActiveLay();
+    layout_name.val(currentLay);
     console.log(currentLay);
     col_name_edit.multipleSelect("setSelects",getColList(currentLay));
 });
@@ -389,7 +380,7 @@ $(document).ready(function () {
         format : '1'
     };
 
-    $('.ms-drop').find('input').change(function () {
+    $('.ms-drop').find('input').on('change',function () {
         $('#btn-edit-lay').toggleClass('disabled');
     });
 

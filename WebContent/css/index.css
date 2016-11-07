@@ -109,3 +109,7 @@ h3{
     width:16px;
     height:16px;
 }
+
+.opt-layout{
+    cursor:pointer;
+}

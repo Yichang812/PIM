@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="lib/jquery.js"></script>
+	<script src="lib/jquery.js"></script>
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/index.css" rel="stylesheet" />
 	<link href="css/multiple-select.css" rel="stylesheet"/>
@@ -24,7 +24,7 @@
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar-collapse">
+						data-toggle="collapse" data-target="#navbar-collapse">
 					<span class="sr-only">Toggle navigation</span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
@@ -39,8 +39,8 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><span class="glyphicon glyphicon-hdd"></span>
-							DB <span class="caret"></span></a>
+											data-toggle="dropdown"><span class="glyphicon glyphicon-hdd"></span>
+						DB <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a onclick="window.location.reload(true);"><span
 									class="glyphicon glyphicon-refresh"></span> Reload</a></li>
@@ -48,8 +48,9 @@
 									class="glyphicon glyphicon-repeat"></span> Init DB</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a onclick="DB.remove();"><span
-									class="glyphicon glyphicon-trash"></span> Delete DB</a></li>
-						</ul></li>
+									class="glyphicon glyphicon-minus-sign"></span> Delete DB</a></li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -57,219 +58,229 @@
 		<!-- /.container-fluid -->
 	</nav>
 
-	<div class="container">
-		<form action="index.html" class="form-inline text-center">
-			<div class="form-group">
-				<input name="q1" type="text" class="form-control"
-					placeholder="employee number">
-			</div>
-			<div class="form-group">
-				<input name="q2" type="text" class="form-control"
-					placeholder="part of name">
-			</div>
-			<button type="submit" class="btn btn-primary">
-				<span class="glyphicon glyphicon-search"></span> Search
-			</button>
-		</form>
-		<hr>
+    <div class="container">
+        <form action="index.html" class="form-inline text-center">
+            <div class="form-group">
+                <input name="q1" type="text" class="form-control"
+                       placeholder="employee number">
+            </div>
+            <div class="form-group">
+                <input name="q2" type="text" class="form-control"
+                       placeholder="part of name">
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </button>
+        </form>
+        <hr>
 
-		<div class="row">
-			<h3 class="col-lg-2" id="cur-lay-name">Layout Name</h3>
-			<div class="btn-group btn-group pull-right col-lg-offset-8" role="group" aria-label="...">
-				<a type="button" href="emp-form.html" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="New Employee"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-plus-sign icon-overlap"></span> </a>
-				<a type="button" class="btn btn-default" id="btn-download" data-toggle="tooltip" title="Download" data-placement="top"><span class="glyphicon glyphicon-download-alt"></span> </a>
-				<div class="btn-group" role="group">
-					<a type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="layout-dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Layout">
-						<span class="glyphicon glyphicon-th-list icon-rotate"></span> <span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" aria-labelledby="layout-dropdown" id="dropdown-layout">
-						<li class="dropdown-header">Saved Layouts</li>
-						<li class="divider" id="menu-divider"></li>
-						<li class="dropdown-header">Tools</li>
-						<li><a href="#" data-toggle="modal" data-target="#new-layout"><span class="glyphicon glyphicon-th-list icon-rotate"></span><span class="glyphicon glyphicon-plus-sign icon-overlap-2"></span> New Layout</a></li>
-						<li><a href="#" data-toggle="modal" data-target="#edit-layout" id="btn-edit"><span class="glyphicon glyphicon-pencil icon-margin"></span> Edit /Delete Layout</a> </li>
-						<li><a href="#" data-toggle="modal" data-target="#custom-col"><img src="img/imageedit_1_9611779332.gif" class="icon icon-margin"/> New Column</a> </li>
-					</ul>
-				</div>
-				<!--<a type="button" class="btn btn-default" id="btn-show"><span class="glyphicon glyphicon-eye-open"></span> </a>-->
-			</div>
-		</div>
-
-
+        <div class="row">
+            <h3 class="col-lg-2" id="cur-lay-name">Layout Name</h3>
+            <div class="btn-group btn-group pull-right col-lg-offset-8" role="group" aria-label="...">
+                <a type="button" href="emp-form.html" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="New Employee"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-plus-sign icon-overlap"></span> </a>
+                <a type="button" class="btn btn-default" id="btn-download" data-toggle="tooltip" title="Download" data-placement="top"><span class="glyphicon glyphicon-download-alt"></span> </a>
+                <div class="btn-group" role="group">
+                    <a type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="layout-dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Layout">
+                        <span class="glyphicon glyphicon-th-list icon-rotate"></span> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="layout-dropdown" id="dropdown-layout">
+                        <li class="dropdown-header">Saved Layouts</li>
+                        <li class="divider" id="menu-divider"></li>
+                        <li><a href="#" data-toggle="modal" data-target="#new-layout"><span class="glyphicon glyphicon-plus"></span> New Layout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
 
         <br>
-		<br>
-        <div class="table-responsive">
-            <table class="table table-hover" id="tbl-download">
-                <thead>
-                <tr>
-                </tr>
-                </thead>
-                <tbody id="tbody-emps"></tbody>
-            </table>
-        </div>
+        <br>
 
-	</div>
-
-	<!-- Modal for create layout-->
-	<div class="modal fade" id="new-layout" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">New Layout</h4>
-				</div>
-				<div class="modal-body">
-					<form id="new-layout-form">
-						<div class="form-group lay-name-input">
-							<label for="new-layout-name" class="control-label">Name:</label>
-							<input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
-							<span class="help-block" id="lay-help"></span>
-						</div>
-						<div class="form-group col-selector">
-							<label for="col-name-new" class="control-label">Column:</label>
-							<select id="col-name-new" multiple="multiple">
-							</select>
-						</div>
-                        <button type="button" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
-						<button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="width: 58px;margin-right:10px">Close</button>
-
-					</form>
-				</div>
-				<div class="modal-footer">
+        <table class="table table-hover" id="tbl-download">
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody id="tbody-emps"></tbody>
+        </table>
 
 
-				</div>
-			</div>
-		</div>
-	</div>
+    </div>
 
-	<!--Model for edit layout-->
-	<div class="modal fade" id="edit-layout" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Edit /Delete Layout</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group layout-selector">
-							<label for="layout-name" class="control-label">Layout:</label>
-							<select class="form-control" id="layout-name">
-							</select>
-						</div>
+    <!-- Modal for create layout-->
+    <div class="modal fade" data-keyboard="false" data-show="false" data-backdrop="static" id="new-layout" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">New Layout</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="new-layout-form">
+                        <div class="form-group lay-name-input">
+                            <label for="new-layout-name" class="control-label">Name:</label>
+                            <input id="new-layout-name" type="text" class="form-control" placeholder="Name of the layout">
+                            <span class="help-block" id="lay-help"></span>
+                        </div>
+                        <div class="form-group col-selector">
+                            <label for="col-name-new" class="control-label">Column:</label>
+                            <select id="col-name-new" multiple="multiple">
+                            </select>
+                        </div>
 
-						<div class="form-group col-selector">
-							<label for="col-name-edit" class="control-label">Column:</label>
-							<select id="col-name-edit" multiple="multiple">
-							</select>
-						</div>
-
-					</form>
-				</div>
-				<div class="modal-footer">
-					<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-					<a type="button" class="btn btn-danger" id="btn-delete-lay">Delete</a>
-					<a type="button" class="btn btn-info disabled" id="btn-edit-lay">Save Changes</a>
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!--Modal for custom col-->
-
-	<div class="modal fade" id="custom-col" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">New Custom Column</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group col-name-input">
-							<label for="custom-col-name" class="control-label">Name:</label>
-							<input id="custom-col-name" type="text" class="form-control" placeholder="Name of the column">
-							<span class="help-block" id="col-help"></span>
-						</div>
-
-						<label for="metric-def" class="control-label">Metric rule:</label><br>
-						<div class="btn-group" role="group" id="metric-def">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Column1
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="col1">
-								</ul>
-							</div>
-
-							<div class="btn-group" data-toggle="buttons" id="operation">
-								<label class="btn btn-default active">
-									<input type="radio" name="options" id="option1" autocomplete="off" value="0" checked> <strong>&#43</strong>
-								</label>
-								<label class="btn btn-default">
-									<input type="radio" name="options" id="option2" autocomplete="off" value="1"> <strong>&#45</strong>
-								</label>
-								<label class="btn btn-default">
-									<input type="radio" name="options" id="option4" autocomplete="off" value="2"> <strong>&#215</strong>
-								</label>
-								<label class="btn btn-default">
-									<input type="radio" name="options" id="option5" autocomplete="off" value="3"> <strong>&#247</strong>
-								</label>
-							</div>
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Column2
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="col2">
-								</ul>
-							</div>
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-										id="btn-format" data-toggle="popover" data-trigger="focus">
-									<span id="format-text">Format</span>
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="format">
-									<li value="1"><a href="#">Number(1,2,3)</a></li>
-									<li value="2"><a href="#">Percent(%)</a></li>
-									<li value="3"><a href="#">Currency($)</a></li>
-								</ul>
-							</div>
-						</div>
-						<div id="definition" class="panel panel-default" style="margin-top: 10px">
-							<div class="panel-body" id="def-panel"><p class="text-muted">Select the column and operation to define your metric.</p></div>
-						</div>
-
-
-					</form>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-info" id="btn-save-col">Save</button>
-
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--Delete confirm-->
-    <div id="overlay"></div>
-    <div id="dialog">
-        <span>Do you want to Delete <strong id="delete-lay"></strong>?</span>
-        <span>The operation is <strong>permanent</strong>.</span>
-        <div>
-            <button class="btn btn-danger btn-lg" id="btn-yes">Delete</button>
-            <button class="btn btn-default btn-lg" id="btn-no">No</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info pull-right" id="btn-create-lay">Save</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="width: 58px;margin-right:10px">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
-	<script src="js/index.js"></script>
-	<script src="js/layout.js"></script>
+    <!--Model for edit layout-->
+    <div class="modal fade" data-keyboard="false" data-show="false" data-backdrop="static" id="edit-layout" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Editing Layout: <strong id="edit-layout-name">Test</strong></h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group col-selector">
+                            <label for="col-name-edit" class="control-label">Column:</label>
+                            <select id="col-name-edit" multiple="multiple">
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a type="button" class="btn btn-info" id="btn-edit-lay" onclick="editLay()">Save Changes</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal for custom col-->
+
+    <div class="modal fade" data-keyboard="false" data-show="false" data-backdrop="static" id="custom-col" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">New Custom Column</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group col-name-input">
+                            <label for="custom-col-name" class="control-label">Name:</label>
+                            <input id="custom-col-name" type="text" class="form-control" placeholder="Name of the column">
+                            <span class="help-block" id="col-help"></span>
+                        </div>
+
+                        <label for="metric-def" class="control-label">Metric rule:</label><br>
+                        <div class="btn-group" role="group" id="metric-def">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="col1-text">Column1</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" id="col1">
+                                </ul>
+                            </div>
+
+                            <div class="btn-group" data-toggle="buttons" id="operation">
+                                <label class="btn btn-default active">
+                                    <input type="radio" name="options" id="option1" autocomplete="off" value="0" checked> <strong>&#43</strong>
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="options" id="option2" autocomplete="off" value="1"> <strong>&#45</strong>
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="options" id="option4" autocomplete="off" value="2"> <strong>&#215</strong>
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="options" id="option5" autocomplete="off" value="3"> <strong>&#247</strong>
+                                </label>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="col2-text">Column2</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" id="col2">
+                                </ul>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        id="btn-format" data-toggle="popover" data-trigger="focus">
+                                    <span id="format-text">Format</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" id="format">
+                                    <li value="1"><a href="#">Number(1,2,3)</a></li>
+                                    <li value="2"><a href="#">Percent(%)</a></li>
+                                    <li value="3"><a href="#">Currency($)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div id="definition" class="panel panel-default" style="margin-top: 10px">
+                            <div class="panel-body" id="def-panel"><p class="text-muted">Select the column and operation to define your metric.</p></div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="btn-save-col">Save</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" data-show="false" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" id="alert-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="glyphicon glyphicon-alert"></span><span>  Are you sure?</span>
+                </div>
+                <div class="modal-body">
+                    <div>Are you sure you want to delete <strong id="delete-lay"></strong>?</div>
+                    <span id="help-text">This operation is permanent. It cannot be undo!</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-no">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn-yes">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" data-show="false" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" id="warning-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="glyphicon glyphicon-info-sign"></span><span> Something went wrong!</span>
+                </div>
+                <div class="modal-body">
+                    <div id="warning-text">Warming message</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning pull-right" data-dismiss="modal">OK, got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/layout.js"></script>
 </body>
 </html>

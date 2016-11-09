@@ -35,6 +35,8 @@ $(document).ready(function () {
         content:'Choose the kind of formatting you\'d like for the column contents'
     });
 
+    $('.modal').modal({backdrop: 'static', keyboard: false})
+
 
 
 });

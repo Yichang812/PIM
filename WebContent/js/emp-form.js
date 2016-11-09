@@ -28,6 +28,11 @@ if (id) {
 	$('#pspt_date input').val(emp.pspt_date);
 	$('#pspt_name input').val(emp.pspt_name);
 	$('#rental select').val(emp.rental);
+	$('#or_wage input').val(emp.or_wage);
+	$('#add_wage input').val(emp.add_wage);
+	$('#target input').val(emp.tar_amount);
+	$('#sale input').val(emp.real);
+	$('#food input').val(emp.food);
 
 	// update image and name
 	$('#img-emp').attr('src', 'img/' + emp.id + '.jpg');
@@ -52,6 +57,11 @@ function update() {
 	emp.push($('#pspt_date input').val());
 	emp.push($('#pspt_name input').val());
 	emp.push(parseInt($('#rental select').val()));
+	emp.push($('#or_wage input').val())
+	emp.push($('#add_wage input').val());
+	emp.push($('#target input').val());
+	emp.push($('#sale input').val());
+	emp.push($('#food input').val());
 
 	if (id) {
 		emp.push(id);
@@ -69,6 +79,11 @@ function update() {
 				pspt_date = ?, \
 				pspt_name = ?, \
 				rental = ? \
+				or_wage = ?\
+				add_wage = ?\
+				tar_amount = ?\
+				real = ?\
+				food = ?\
 				WHERE id = ?',
 				emp);
 	} else {
@@ -88,8 +103,13 @@ function update() {
 				pspt_no, \
 				pspt_date, \
 				pspt_name, \
-				rental) \
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);',
+				rental,\
+				or_wage,\
+				add_wage,\
+				tar_amount,\
+				real,\
+				food)\
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',
 				emp);
 	}
 	window.location.assign('emp.html?id=' + id);
